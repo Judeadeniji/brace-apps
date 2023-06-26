@@ -1,0 +1,25 @@
+{
+  "name": "new-app",
+  "version": "1.0.0",
+  "description": "A BraceJs Application",
+  "main": "src/index.js",
+  "homepage": "/",
+  "scripts": {
+    "dev": "brace-js-script dev",
+    "build": "brace-js-script build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "boxicons": "^2.1.4",
+    "brace-js": "file:../../brace-js",
+    "brace-js-scripts-dev": "^1.2.2",
+    "brace-js-scripts": "file:../../brace-js-scripts",
+    "brace-router": "^1.1.1",
+    "utiliti-js": "^2.0.3"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
+  }
+}
