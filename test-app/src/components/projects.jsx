@@ -1,4 +1,4 @@
-import { createData, memo } from "brace-js";
+import { createData, Component } from "brace-js";
 import { Core } from "utiliti-js";
 import scrollTo from "../helper/scroll";
 const http = new Core.Http();
@@ -47,7 +47,7 @@ function Project({ key, data }) {
   );
 }
 
-const Loader2 = memo(function Loader2() {
+const Loader2 = Component(function Loader2() {
   return (
     <div
       class="relative block overflow-hidden rounded-lg h-[250px] md:h-[320px] w-full">
@@ -64,7 +64,7 @@ const Loader2 = memo(function Loader2() {
   );
 })
 
-export const Newsletter = memo(function Newsletter() {
+export const Newsletter = Component(function Newsletter() {
   return (
     <section class="bg-black-600 hover:bg-blue-900 py-10 px-2 my-20 mx-auto rounded-2xl
       flex items-center justify-center md:py-16" style={{ width: '94%' }} id="newsletter">

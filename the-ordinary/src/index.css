@@ -1,0 +1,77 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("./fonts/SFPRODISPLAYBOLD.OTF") format("opentype");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("./fonts/SFPRODISPLAYMEDIUM.OTF") format("opentype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "SF-Pro";
+  src: url("./fonts/SFPRODISPLAYREGULAR.OTF") format("opentype");
+  font-weight: 400;
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade img {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade.fade img {
+  opacity: 0;
+}
+.menu-container {
+  @apply overflow-hidden fixed top-0 bottom-0 right-0 left-0 md:hidden w-screen h-screen flex items-center justify-center z-30;
+}
+
+.menu {
+  @apply bg-white relative flex items-center justify-center p-8 w-full h-full;
+}
+
+.button {
+  @apply bg-none outline-0 hover:bg-background h-12 w-12 rounded-full absolute left-3 top-3
+}
+
+.menu ul {
+  @apply list-none w-full p-0 m-0;
+}
+
+.menu li {
+  @apply text-center w-[90%] mx-auto mb-4;
+}
+
+.menu a {
+  @apply block py-2 px-4 text-black font-bold no-underline transition duration-300 ease-in-out rounded-full;
+}
+
+.menu a:hover {
+  @apply bg-gray-200;
+}

@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+  font-family: 'SF-Pro';
+  src: url(./assets/fonts/SFPRODISPLAYBOLD.OTF) format('opentype');
+  font-weight: 900;
+}
+@font-face {
+  font-family: 'SF-Pro';
+  src: url(./assets/fonts/SFPRODISPLAYMEDIUM.OTF) format('opentype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'SF-Pro';
+  src: url(./assets/fonts/SFPRODISPLAYREGULAR.OTF) format('opentype');
+  font-weight: 400;
+}
+

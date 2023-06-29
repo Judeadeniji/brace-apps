@@ -1,4 +1,4 @@
-import { createData, memo } from "brace-js";
+import { createData, Component } from "brace-js";
 import scrollTo from "../helper/scroll";
 import bgImage from "../assets/output2.jpg";
 import heroImage from "../assets/hero-image.png";
@@ -22,7 +22,8 @@ function textValue(h1) {
 }
 
 
-const HeroImage = memo(function HeroImage() {
+const HeroImage = Component(({ name }) => {
+  alert("Component Only Runs Once")
   return (
           <div class="md:col-span-1">
             <img
@@ -65,7 +66,7 @@ export default function Hero() {
             </button>
             </div>
           </div>
-          <HeroImage />
+          <HeroImage name="hello" />
         </div>
       </div>
     </section>

@@ -1,0 +1,15 @@
+{
+  "name": "BraceJs Starter App",
+  "short_name": "BraceJs App",
+  "start_url": "/index.html",
+  "background_color": "#552fd0",
+  "theme_color": "#000000",
+  "display": "standalone",
+  "main.css": "./assets/css/main.9b6ac286.css",
+  "main.js": "./assets/js/main.12940fc9d054da3ce7a1.js",
+  "modules.js": "./assets/js/modules.f9633dcd49576ca32d27.js",
+  "assets/fonts/SFPRODISPLAYMEDIUM.OTF": "./assets/fonts/SFPRODISPLAYMEDIUM.OTF",
+  "assets/fonts/SFPRODISPLAYBOLD.OTF": "./assets/fonts/SFPRODISPLAYBOLD.OTF",
+  "assets/fonts/SFPRODISPLAYREGULAR.OTF": "./assets/fonts/SFPRODISPLAYREGULAR.OTF",
+  "index.html": "./index.html"
+}

@@ -1,4 +1,4 @@
-import { memo } from "brace-js";
+import { Component } from "brace-js";
 import { showMenu } from "./footer";
 import scrollTo from "../helper/scroll";
 
@@ -29,4 +29,4 @@ function Header() {
 </header>
     )
 }
-export default memo(Header);
+export default Component(Header);
