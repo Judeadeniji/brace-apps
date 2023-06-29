@@ -1,4 +1,4 @@
-import { Component } from "brace-js";
+import { Component } from "@mejor";
 import Header from "@app/components/header";
 import Footer from "@app/components/footer";
 
