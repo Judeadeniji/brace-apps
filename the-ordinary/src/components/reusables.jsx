@@ -19,16 +19,16 @@ export const ProductCard = Component(({
           (<comment/>)}
       </figure>
       <div class="py-2 px-1 mt-2">
-        <div class="flex gap-x-2">
+        <div class="flex items-center justify-between gap-x-2">
           <p class="text-[11px] font-bold text-black leading-4">{title}</p>
           <i class="self-end ml-1 text-xl bi bi-heart" />
         </div>
         <div class="mt-1">
           <p class="text-[12px] font-bold">${price}{" "} 
-          <span
+          { discount ? (<span
           class="text-[12px] text-gray-500 line-through">
             {roundTo(price - (price *(discount/100)), 2)}
-          </span>
+          </span>) : <comment /> }
           </p>
         </div>
       </div>
@@ -41,7 +41,7 @@ export const ProductCard = Component(({
    text
  }) => (
    <div class="w-full flex items-center justify-between p-2 my-1">
-    <h4 class="text-[21px] uppercase font-bold">{title}</h4>
+    <h4 class="text-[18px] md:text-[21px] uppercase font-bold">{title}</h4>
     {link ? <Link class="underline uppercase text-[12px] font-semibold"
     to={link}>{text || "See All"}</Link> : <comment />}
    </div> 

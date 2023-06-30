@@ -4,7 +4,7 @@ import { AdBanner, ProductSection, ProductCard, SectionHeader, BlogCard } from "
 
 function Section({ title }) {
   return (
-      <ProductSection title={title} link="/catalogue/best-sellers">
+      <ProductSection title={title} link="/catalog/best-sellers">
         <ProductCard title="The most descriptive title I could think of" price={33.00} discount={10} />
         <ProductCard title="The most descriptive title I could think of" price={33.00} discount={10} />
         <ProductCard title="The most descriptive title I could think of" price={33.00} discount={10} />
