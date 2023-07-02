@@ -1,4 +1,5 @@
 @import "tailwindcss/base";
+@import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
@@ -57,7 +58,7 @@
 }
 
 .button {
-  @apply bg-none outline-0 hover:bg-background h-12 w-12 rounded-full absolute left-3 top-3
+  @apply bg-none outline-0 hover:bg-background h-12 w-12 rounded-full absolute left-3 top-3;
 }
 
 .menu ul {
@@ -74,4 +75,40 @@
 
 .menu a:hover {
   @apply bg-gray-200;
+}
+
+.dropdown:hover .dropdown-menu {
+  @apply block;
+}
+
+.dropdown:hover .dropdown-menu {
+  animation: fade-in 200ms ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.show {
+  animation: slide-in-top 300ms linear;
+}
+
+@keyframes slide-in-top {
+  from {
+    display: flex;
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+header {
+  transition: all .2s;
 }

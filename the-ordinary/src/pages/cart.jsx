@@ -1,13 +1,20 @@
-import { Component, reactive } from "@mejor";
+import { Component } from "@mejor";
+import { navigate } from '@mejor/router';
 import { ProductSection, ProductCard } from "@app/components/reusables";
+import { 
+  get_cart_items,
+  increase_item_quantity,
+  decrease_item_quantity,
+  remove_from_cart
+  } from "@app/services/cart-store";
 
-export default ({ ChildOutlet: Checkout }) => {
+export default Component(() => {
   return (
     <div class="w-full px-1 mt-4">
-      {Checkout ? (<Checkout />) : (<Cart/>)}
+      <Cart />
     </div>
   )
-}
+})
 
 const PromoCodeForm = Component(() => (
   <div class="my-8 w-full md:h-[40px] md:flex items-center md:gap-x-2">
@@ -41,7 +48,8 @@ const Checkout = Component(() => (
            <p class="text-sm font-semibold">55.46 $</p>
         </div>
         
-        <button class="uppercase h-[40px] w-full bg-accent text-white text-[14px] font-semibold">
+        <button class="uppercase h-[40px] w-full bg-accent text-white
+        text-[14px] font-semibold" click$={() => navigate("/cart/checkout")}>
           proceed to checkout 
         </button>
       </div>
@@ -49,34 +57,13 @@ const Checkout = Component(() => (
   </div>
 ))
 
-const Cart = Component(() => {
-  return (
-    <div class="w-full" key="cart-component">
-      <h1 class="mt-3 mb-4 text-[21px] uppercase font-bold">shopping cart</h1>
-      <div class="w-full md:gap-x-3 md:flex md:items-start">
-        <div class="mb-4 sm:mb-0 md:w-2/3">
-          <CartItem />
-          <Divider />
-          <CartItem />
-          <Divider />
-          <CartItem />
-          
-          <PromoCodeForm />
-        </div>
-
-        <Checkout />
-      </div>
-        <RecentlyViewed />
-    </div>
-  )
-})
-
-const QuantityControl = Component(({ count }) => {
+const QuantityControl = (({ quantity, id }) => {
   
-  const increment = () => count.value++
+  const increment = () => {
+    increase_item_quantity(id)
+  }
   const decrement = () => {
-    if (count.value < 2) return;
-    count.value--
+    decrease_item_quantity(id)
   }
   
   return (
@@ -86,7 +73,7 @@ const QuantityControl = Component(({ count }) => {
         +
       </button>
       <p class="flex w-1/3 h-full items-center justify-center
-      font-semibold text-[16px]" sync:textContent={count} />
+      font-semibold text-[16px]">{quantity}</p>
       <button click$={decrement} class="flex w-1/3 h-full items-center
       justify-center font-bold text-[12px] border-l border-l-accent">
         -
@@ -95,9 +82,9 @@ const QuantityControl = Component(({ count }) => {
   )
 })
 
-function CartItem() {
+const CartItem = (({ product }) => {
   return (
-    <div class="flex gap-x-4 w-full">
+    <div key={"cart-item-"+product.id} class="flex relative gap-x-4 w-full">
       <figure class="bg-background h-[160px] w-[120px] md:h-[180px] md:w-[140px]" />
       
        <div class="flex flex-col justify-between">
@@ -114,16 +101,51 @@ function CartItem() {
         </div>
         
         <div class="h-[28px] justify-self-end">
-          <QuantityControl count={reactive(1)} />
+          <QuantityControl id={product.id} quantity={product.quantity} />
         </div>
        </div>
+       
+       <button click$={() => remove_from_cart(product.id)} class="h-9 w-9 rounded-full absolute top-0 right-0 active:scale-95 hover:bg-background bg-transparent">
+         <span class="bi bi-x text-lg" />
+       </button>
     </div>
   )
-}
+});
 
-function Divider() {
+const Divider = Component(() => {
   return (
     <div class="border-b my-2 p-0 h-0 w-full" />
+  )
+});
+
+const Cart = () => {
+  const cart_items = get_cart_items();
+  return (
+    <div class="w-full" key="cart-component">
+      <h1 class="mt-3 mb-4 text-[21px] uppercase font-bold">shopping cart</h1>
+      <div class="w-full md:gap-x-3 md:flex md:items-start">
+        <div class="mb-4 sm:mb-0 md:w-2/3">
+        {
+          cart_items.length > 0 ?
+          cart_items.map((product,i) => {
+            return (
+            <div key={product.id}>
+            <CartItem product={product} />
+            {i !== cart_items.length - 1 ? <Divider /> : 
+            (<comment> End </comment>) }
+            </div>
+            )
+          }) :
+          <h1 class="text-xl my-5">Cart is empty</h1>
+        }
+          
+          <PromoCodeForm />
+        </div>
+
+        <Checkout />
+      </div>
+        <RecentlyViewed />
+    </div>
   )
 }
 

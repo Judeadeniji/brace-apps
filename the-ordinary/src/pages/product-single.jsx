@@ -1,4 +1,4 @@
-import { Component, reactive } from "@mejor";
+import { Component, onMount, reactive } from "@mejor";
 import { ProductSection, ProductCard } from "@app/components/reusables";
 import { add_to_cart } from "@app/services/cart-store";
 
@@ -211,8 +211,8 @@ const ProductDesc = () => {
 }
 
 export default Component(({ params }) => {
-  count.value = 1;
-  section.value = 1;
+  //count.value = 1;
+  //section.value = 1;
   return (
     <div key={`product-${params.name}-${params.id}`} class="mt-5 mb-0 mx-0">
       <div class="w-full md:gap-x-4 md:flex">
