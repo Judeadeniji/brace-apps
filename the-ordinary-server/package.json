@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/Judeadeniji/brace-apps.git"
   },
+  "engines": {
+    "node": ">=18 <20"
+  },
   "author": "Adeniji Oluwaferanmi",
   "license": "MIT",
   "bugs": {
