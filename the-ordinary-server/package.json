@@ -1,0 +1,27 @@
+{
+  "name": "the-ordinary-server",
+  "version": "0.0.1",
+  "description": "Production build for the-ordinary e-commerce web app",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "serve": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Judeadeniji/brace-apps.git"
+  },
+  "author": "Adeniji Oluwaferanmi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Judeadeniji/brace-apps/issues"
+  },
+  "homepage": "https://github.com/Judeadeniji/brace-apps#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.1"
+  }
+}
