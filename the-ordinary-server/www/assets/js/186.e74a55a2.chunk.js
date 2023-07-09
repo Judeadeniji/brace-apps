@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkBraceJs=self.webpackChunkBraceJs||[]).push([[186],{3186:(e,s,a)=>{a.r(s),a.d(s,{default:()=>c});const c=()=>createElement("h1",{key:"search page",class:"text-2xl"},"Coming Soon")}}]);

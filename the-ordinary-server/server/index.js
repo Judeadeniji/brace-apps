@@ -17,7 +17,6 @@ server.use('/catalog', express.static(path.join(root, 'www')));
 
 // Serve the "www" directory for subroutes under "/catalog/"
 server.get("/catalog/*", (req, res, next) => {
-  console.log(req.params)
   const subroute = req.params[0];
   if (!subroute.startsWith("assets")) {
     express.static(path.join(root, 'www'))(req, res, next);
@@ -51,7 +50,7 @@ server.get("/api/image", async (req, res) => {
 
 // Send index.html for other routes
 server.get(/^\/(?!api)(?!.*\.(?:html|js|css|ttf|otf|woff|woff2|json)).*$/, (req, res) => {
-  console.log(req.path)
+  
   res.sendFile(path.join(root, 'www', 'index.html'));
 });
 
