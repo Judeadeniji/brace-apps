@@ -1,12 +1,24 @@
-import { createData, If } from "brace-js";
+import { createData } from "@mejor";
+import { Http } from "utiliti-js";
+import LnIcon from "@app/assets/svgs/linkedin"
+import GhIcon from "@app/assets/svgs/gh"
+import TwIcon from "@app/assets/svgs/twitter"
+
 import scrollTo from "../helper/scroll";
-import { Core } from "utiliti-js";
-const http = new Core.Http();
+const http = new Http();
 export const showMenu = createData(false);
+
+function animateElement({ target }) {
+    target.style.opacity = 1;
+  return () => {
+    target.style.opacity = 0;
+  }
+}
 
 export default function Footer() {
   return (
     <footer class="bg-gray-200 text-white" id="footer">
+    <div class="transition-all duration-1000 opacity-0" use:visible={animateElement}>
       <Contact />
       <div class="mt-3 px-4 py-6 sm:px-6 md:flex md:justify-between">
         <div class="flex justify-center md:order-2">
@@ -17,7 +29,9 @@ export default function Footer() {
             class="text-gray-600 hover:text-white mx-3"
           >
             <span class="sr-only">GitHub</span>
-            <i class="bx bxl-github text-2xl" style={{ color: "#6B7280" }}></i>
+            <i class="bx text-2xl" style={{ color: "#6B7280" }}>
+              <GhIcon />
+            </i>
             <span class="sr-only">(opens in new tab)</span>
           </a>
           <a
@@ -28,9 +42,11 @@ export default function Footer() {
           >
             <span class="sr-only">LinkedIn</span>
             <i
-              class="bx bxl-linkedin text-2xl"
+              class="text-2xl"
               style={{ color: "#6B7280" }}
-            ></i>
+            >
+              <LnIcon />
+            </i>
             <span class="sr-only">(opens in new tab)</span>
           </a>
           <a
@@ -40,7 +56,9 @@ export default function Footer() {
             class="text-gray-600 hover:text-white mx-3"
           >
             <span class="sr-only">Twitter</span>
-            <i class="bx bxl-twitter text-2xl" style={{ color: "#6B7280" }}></i>
+            <i class="text-2xl" style={{ color: "#6B7280" }}>
+              <TwIcon />
+            </i>
             <span class="sr-only">(opens in new tab)</span>
           </a>
         </div>
@@ -56,12 +74,16 @@ export default function Footer() {
           </p>
         </div>
       </div>
+      </div>
+      
+      <div>
       {showMenu.value ?
         <Modal /> :
         <comment>
           Menu Modal
         </comment>
       }
+      </div>
     </footer>
   );
 }
@@ -211,7 +233,7 @@ const Alert = ({ type }) => {
       class="bg-green-100 border border-green-400 text-green-700 px-4 py-3
 rounded relative mt-5"
       role="alert"
-      animate={{
+      use:animation={{
         keyframes: [
           { opacity: 0.4, transform: "translateY(50px)" },
           { opacity: 1, transform: "translateY(0)" },
@@ -240,29 +262,28 @@ rounded relative mt-5"
   );
 };
 
+showMenu.subscribe(s => {
+  if(!s) {
+    document.body.style.overflowY = 'scroll'
+    return;
+  }
+    document.body.style.overflowY = 'hidden'
+})
+
 function Modal() {
   return (
-    <div
-      class="fixed z-20 inset-0 overflow-y-auto"
-      animate={{
+    <div class="fixed z-20 inset-0 overflow-y-auto" use:animation={{
         keyframes: [
           { opacity: 0.4, backdropFilter: "blur(0)" },
           { opacity: 1, backdropFilter: "blur(12px)" },
         ],
         options: {
-          duration: 300,
+          duration: 100,
           fill: "forwards",
         },
-      }}
-    >
-      <div
-        class="flex items-center justify-center min-h-screen
-      overflow-hidden"
-      >
-        <div
-          class="fixed inset-0 backdrop-blur-sm bg-blend-darken"
-          on:click={() => showMenu.set(false)}
-        ></div>
+      }} >
+      <div class="flex items-center justify-center min-h-screen overflow-hidden">
+        <div class="fixed inset-0 backdrop-blur-sm bg-blend-darken" on:click={() => showMenu.set(false)} />
         <div
           class="relative bg-white rounded-lg w-fit sm:max-w-screen-sm
         md:max-w-screen-md lg:max-w-screen-lg mx-4 md:mx-auto p-8"
@@ -273,14 +294,17 @@ function Modal() {
             focus:outline-none"
               on:click={() => showMenu.set(false)}
             >
-              <i class="bx bx-x text-2xl"></i>
+              <i class="text-2xl">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+              </svg>
+              </i>
             </button>
           </div>
           <div class="text-center">
             <div class="flex flex-col justify-center">
               <p
-                class="block text-gray-700 hover:text-blue-600
-              py-2"
+                class="block text-gray-700 hover:text-blue-600 py-2"
                 on:click={() => {
                   showMenu.set(false);
                   scrollTo("#top");
@@ -321,18 +345,30 @@ function Modal() {
             </div>
             <div class="flex flex-row items-center justify-center mt-8">
               <a href="https://github.com/Judeadeniji" class="text-black-0 hover:text-blue-600 mx-4">
-                <i class="bx bxl-github text-2xl"></i>
+                <i class="bx text-2xl" style={{ color: "#6B7280" }}>
+                  <GhIcon />
+              </i>
               </a>
               <a href="/" class="text-gray-500 hover:text-gray-600 mx-4">
-                <i class="bx bxs-moon text-2xl"></i>
+                <i class="text-2xl">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  fill="currentColor" className="w-4 h-4">
+                    <path fillRule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clipRule="evenodd" />
+                  </svg>
+
+                </i>
               </a>
               <a href="https://twitter.com/feranmiwebdev" class="text-black-0 hover:text-blue-600 mx-4">
-                <i class="bx bxl-twitter text-2xl"></i>
+                <i class="text-2xl" style={{ color: "#6B7280" }}>
+                  <TwIcon />
+                </i>
               </a>
               <a
               href="https://www.linkedin.com/in/oluwaferanmi-adeniji-537416252"
               class="text-black-0 hover:text-blue-400 mx-4">
-                <i class="bx bxl-linkedin text-2xl"></i>
+              <i class="text-2xl" style={{ color: "#6B7280" }}>
+                <LnIcon />
+              </i>
               </a>
             </div>
           </div>

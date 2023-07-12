@@ -1,7 +1,9 @@
-import { createData, memo } from "brace-js";
-import { Core } from "utiliti-js";
+import { createData, Component } from "brace-js";
+import { Http } from "utiliti-js";
+import GhIcon from "@app/assets/svgs/gh";
+import LinkIcon from "@app/assets/svgs/link";
 import scrollTo from "../helper/scroll";
-const http = new Core.Http();
+const http = new Http();
 const LoaderUtils = ["","",""]
 const projects$ = createData({
   posts: [],
@@ -21,7 +23,10 @@ function Project({ key, data }) {
         class="object-cover w-full h-full transform transition-transform duration-500 hover:scale-110"
         src=""
         alt="Project Image"
-        use:visible={({ target }) => (target.src !== img_url ? target.src = (img_url) : null)}
+        use:visible={({ target }) => {
+        if(target.src.includes(img_url)) return;
+        target.src = img_url;
+        }}
       />
       <div class="absolute inset-0 bg-black-0 bg-opacity-50 flex flex-col items-center justify-center transition-opacity duration-500 opacity-0 hover:opacity-100">
         <h3 class="text-white font-bold text-xl mb-2">{data.title}</h3>
@@ -32,14 +37,14 @@ function Project({ key, data }) {
             class="bg-gray-100 text-gray-800 rounded-full grid
           place-content-center mr-4 py-2 px-4"
           >
-            <i class="bx bxl-github bx-sm"></i>
+            <i class="">
+              <GhIcon />
+            </i>
           </a>
-          <a
-            href={data.link}
-            class="bg-gray-100 text-gray-800 rounded-full grid
-          place-content-center py-2 px-4"
-          >
-            <i class="bx bx-link-external bx-sm"></i>
+          <a href={data.link} class="bg-gray-100 text-gray-800 rounded-full grid place-content-center py-2 px-4">
+            <i class="">
+              <LinkIcon/>
+            </i>
           </a>
         </div>
       </div>
@@ -47,7 +52,7 @@ function Project({ key, data }) {
   );
 }
 
-const Loader2 = memo(function Loader2() {
+const Loader2 = Component(function Loader2() {
   return (
     <div
       class="relative block overflow-hidden rounded-lg h-[250px] md:h-[320px] w-full">
@@ -64,10 +69,18 @@ const Loader2 = memo(function Loader2() {
   );
 })
 
-export const Newsletter = memo(function Newsletter() {
+export const Newsletter = Component(function Newsletter() {
+    function animateElement({ target }) {
+      target.style.transform = "scale(1)";
+      return () => {
+        target.style.transform = "scale(0.7)";
+      }
+    }
+  
   return (
-    <section class="bg-black-600 hover:bg-blue-900 py-10 px-2 my-20 mx-auto rounded-2xl
-      flex items-center justify-center md:py-16" style={{ width: '94%' }} id="newsletter">
+    <section class="scale-75 transition-all duration-700 bg-black-600 hover:bg-blue-900 py-10 px-2 my-20 mx-auto
+    rounded-2xl flex items-center justify-center md:py-16" style={{ width: '94%'
+    }} id="newsletter" use:visible={animateElement}>
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold m-auto mb-4 text-center text-white">
           Don't Miss Out, Sign Up Now!

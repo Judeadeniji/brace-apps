@@ -1,0 +1,43 @@
+{
+  "name": "Adeniji Oluwaferanmi",
+  "title": "Adeniji Oluwaferanmi • Portfolio",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "main.css": "/assets/css/main.4c734b88.css",
+  "main.js": "/assets/js/main.6baf5c831ddfbf6a5ebe.js",
+  "modules.js": "/assets/js/modules.60c85b5a7654ab23fbd2.js",
+  "assets/images/hero-image.png": "/assets/images/hero-image.png",
+  "assets/images/output2.jpg": "/assets/images/output2.jpg",
+  "assets/images/about-image.png": "/assets/images/about-image.png",
+  "index.html": "/index.html"
+}

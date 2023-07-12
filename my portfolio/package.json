@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A BraceJs Application",
   "main": "src/index.js",
+  "port": "5173",
   "homepage": "/",
   "scripts": {
     "dev": "brace-js-script dev",
@@ -12,12 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "boxicons": "^2.1.4",
     "brace-js": "file:../../brace-js",
-    "brace-js-scripts-dev": "^1.2.2",
-    "brace-js-scripts": "file:../../brace-js-scripts",
-    "brace-router": "^1.1.1",
-    "utiliti-js": "^2.0.3"
+    "brace-js-scripts": "^1.2.23",
+    "utiliti-js": "^2.0.336"
   },
   "devDependencies": {
     "tailwindcss": "^3.3.1"
