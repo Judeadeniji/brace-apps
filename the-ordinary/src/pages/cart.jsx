@@ -1,11 +1,14 @@
 import { Component } from "@mejor";
 import { navigate } from '@mejor/router';
 import { ProductSection, ProductCard } from "@app/components/reusables";
+import { get_recently_viewed } from "@app/services/product-store";
 import { 
   get_cart_items,
+  get_total_cart_items,
   increase_item_quantity,
   decrease_item_quantity,
-  remove_from_cart
+  remove_from_cart,
+  create_order
   } from "@app/services/cart-store";
 
 export default Component(() => {
@@ -18,44 +21,54 @@ export default Component(() => {
 
 const PromoCodeForm = Component(() => (
   <div class="my-8 w-full md:h-[40px] md:flex items-center md:gap-x-2">
-    <input placeholder="Enter Promo Code" class="rounded-t-sm placeholder-gray-500 h-[40px] md:h-full w-full focus:bg-background md:w-2/3 text-[12px] focus:outline-0 outline-0 border-0 border-b border-b-gray-500 focus:border-b-accent" />
-    <button class="uppercase mt-3 md:mt-0 h-[40px] md:h-full md:w-1/4 w-full
+    <input placeholder="Enter Promo Code" class="rounded-t-sm
+    placeholder-gray-500 h-[40px] md:h-full w-full focus:bg-background md:w-2/3 text-[16px] focus:outline-0 outline-0 border-0 border-b border-b-gray-500
+    focus:border-b-accent" />
+    <button class="active:scale-95 transition-transform duration-100 uppercase mt-3 md:mt-0 h-[40px] md:h-full md:w-1/4 w-full
     border border-accent bg-transparent hover:bg-accent text-accent
     hover:text-white text-[14px] font-semibold">
       Apply Code
     </button>
   </div>
-))
+));
 
-const Checkout = Component(() => (
-  <div class="mt-3 md:mt-0 md:w-1/3">
-    <h1 class="mb-8 text-[21px] uppercase font-bold">cart total</h1>
-    <div class="w-full">
-      <div class="mb-4">
-        <div class="flex items-center justify-between mb-2">
-           <p class="text-sm font-bold uppercase">subtotal</p>
-           <p class="text-sm font-semibold">50.99 $</p>
+const Checkout = (({ items }) => {
+  const subtotal = items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+  const vat = subtotal * 0.045;
+  const total = subtotal + vat;
+
+  return (
+    <div class="mt-3 md:mt-0 md:w-1/3">
+      <h1 class="mb-8 text-[21px] uppercase font-bold">cart total</h1>
+      <div class="w-full">
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-sm font-bold uppercase">subtotal</p>
+            <p class="text-sm font-semibold">{subtotal.toFixed(2)} $</p>
+          </div>
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-bold uppercase">vat</p>
+            <p class="text-sm font-semibold">+ {(vat).toFixed(2)} $</p>
+          </div>
         </div>
-        <div class="flex items-center justify-between mb-3">
-           <p class="text-sm font-bold uppercase">vat</p>
-           <p class="text-sm font-semibold">+ 4.47 $</p>
+
+        <div class="mt-4">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-bold uppercase">Total</p>
+            <p class="text-sm font-semibold">{total.toFixed(2)} $</p>
+          </div>
+
+          <button class="active:scale-95 transition-transform duration-100
+          uppercase h-[40px] w-full bg-accent text-white text-[14px]
+          font-semibold" click$={createOrderAndNavigate}>
+            proceed to checkout
+          </button>
         </div>
-      </div>
-      
-      <div class="mt-4">
-        <div class="flex items-center justify-between mb-3">
-           <p class="text-sm font-bold uppercase">Total</p>
-           <p class="text-sm font-semibold">55.46 $</p>
-        </div>
-        
-        <button class="uppercase h-[40px] w-full bg-accent text-white
-        text-[14px] font-semibold" click$={() => navigate("/cart/checkout")}>
-          proceed to checkout 
-        </button>
       </div>
     </div>
-  </div>
-))
+  );
+});
+
 
 const QuantityControl = (({ quantity, id }) => {
   
@@ -85,18 +98,21 @@ const QuantityControl = (({ quantity, id }) => {
 const CartItem = (({ product }) => {
   return (
     <div key={"cart-item-"+product.id} class="flex relative gap-x-4 w-full">
-      <figure class="bg-background h-[160px] w-[120px] md:h-[180px] md:w-[140px]" />
+      <figure class="overflow-hidden bg-background rounded h-[160px] w-[120px] md:h-[180px] md:w-[140px]">
+        <img loading="lazy" class="w-full h-full object-fit"
+        src={product?.image} />
+      </figure>
       
        <div class="flex flex-col justify-between">
         <div class="flex flex-col gap-y-2">
           <p class="text-sm">
-            Lactic Acid 10% HA
+            {product.product_title}
           </p>
           <p class="font-semibold text-sm">
-            30 ml
+            {product?.variant[0] ? product.variant[0] : ""}
           </p>
           <p class="font-semibold text-sm">
-            $26.58
+            ${product.price}
           </p>
         </div>
         
@@ -117,6 +133,22 @@ const Divider = Component(() => {
     <div class="border-b my-2 p-0 h-0 w-full" />
   )
 });
+
+const Recent = () => {
+  const recents = get_recently_viewed();
+  
+  return (
+      recents.length > 2 ?
+      (<div class="w-full my-16">
+        <ProductSection title="Recently Viewed">
+        {recents.map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (
+          <ProductCard {...{id, image, price, discount, title: product_title, category, isFavorite, slug}} />
+        ))
+        }
+        </ProductSection>
+      </div>) : <comment />
+  )
+}
 
 const Cart = () => {
   const cart_items = get_cart_items();
@@ -142,24 +174,20 @@ const Cart = () => {
           <PromoCodeForm />
         </div>
 
-        <Checkout />
+        <Checkout items={cart_items} />
       </div>
-        <RecentlyViewed />
+        <Recent />
     </div>
   )
 }
 
-function RecentlyViewed() {
-  return (
-    <div class="w-full my-16">
-      <ProductSection title="Recently Viewed">
-        <ProductCard title="A Demo Title" price={55.63} discount={10} />
-        <ProductCard title="A Demo Title" price={104.99} />
-        <ProductCard title="A Demo Title" price={26.95} />
-        <ProductCard title="A Demo Title" price={55.63} />
-        <ProductCard title="A Demo Title" price={104.99} discount={10} />
-        <ProductCard title="A Demo Title" price={104.99} />
-      </ProductSection>
-    </div>
-  )
+function createOrderAndNavigate() {
+  const cart_items = get_total_cart_items();
+  
+  if (!cart_items) return;
+  const { orderNumber } = create_order();
+  
+  navigate("/cart/"+orderNumber)
 }
+
+export const cache = true;

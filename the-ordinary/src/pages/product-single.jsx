@@ -1,6 +1,9 @@
-import { Component, onMount, reactive } from "@mejor";
+import { Component, reactive } from "@mejor";
 import { ProductSection, ProductCard } from "@app/components/reusables";
 import { add_to_cart } from "@app/services/cart-store";
+import { get_recently_viewed, set_recently_viewed } from "@app/services/product-store";
+import { findBySlug, getProductsByCategory } from "@app/services/methods";
+
 
 const ProductImages = Component(() => {
   return (
@@ -21,101 +24,139 @@ const ProductImages = Component(() => {
   )
 })
 
-const ProductMeta = Component(() => {
-  
-  return (
-    <div class="w-full px-2 md:px-0">
-      <div class="border-b-[0.8px] mb-1  border-b-accent py-1 w-full">
-        <h5 class="leading-3 font-bold text-[10px] md:text-[12px]">
-          Regimen Step 2: Treat
-        </h5>
-        <p class="text-[9px] mt-1 md:text-[11px]">
-          A high strength exfoliator that works hard to reveal a smoother skin.
-        </p>
-      </div>
-      
-      <div class="border-b-[0.8px] mb-1  border-b-accent py-1 w-full">
-        <h5 class="leading-3 font-bold text-[10px] md:text-[12px]">
-          Targets
-        </h5>
-        <p class="text-[9px] mt-1 md:text-[11px]">
-          Uneven Skin Tone, Texture Irregularities, Dullness.
-        </p>
-      </div>
-      
-      <div class="border-b-[0.8px] mb-1  border-b-accent py-1 w-full">
-        <h5 class="leading-3 font-bold text-[10px] md:text-[12px]">
-          Suited To
-        </h5>
-        <p class="text-[9px] mt-1 md:text-[11px]">
-          Dry Skin.
-        </p>
-      </div>
-      
-      <div class="border-b-[0.8px] mb-1  border-b-accent py-1 w-full">
-        <h5 class="leading-3 font-bold text-[10px] md:text-[12px]">
-          Format
-        </h5>
-        <p class="text-[9px] mt-1 md:text-[11px]">
-          Water Based Serum.
-        </p>
-      </div>
-      
-      <div class="border-b-[0.8px] mb-1  border-b-accent py-1 w-full">
-        <h5 class="leading-3 font-bold text-[10px] md:text-[12px]">
-          Key Ingredients
-        </h5>
-        <p class="text-[9px] mt-1 md:text-[11px]">
-          Lactic Acid, Sodium Hyaluronate Crosspolymer, Tasmania Lanceolate Fruit/Leaf extract.
-        </p>
-      </div>
+const ProductMeta = Component(() => (
+  <div class="w-full px-2 md:px-0">
+    <div class="border-b-[0.8px] mb-1 border-b-accent py-1 w-full">
+      <h5 class="mb-1 font-bold text-[16px] md:text-[18px]">
+        Product Description
+      </h5>
+      <p class="text-[14px] mt-1 md:text-[16px]">
+        Explore the remarkable features and benefits of this product.
+      </p>
     </div>
-  )
-})
-
-const count = reactive(1);
-
-const ProductDetails = Component(() => {
   
-  const increment = () => count.value++
+    <div class="border-b-[0.8px] mb-1 border-b-accent py-1 w-full">
+      <h5 class="mb-1 font-bold text-[16px] md:text-[18px]">
+        Highlights
+      </h5>
+      <p class="text-[14px] mt-1 md:text-[16px]">
+        Discover the key features and advantages of this product.
+      </p>
+    </div>
+  
+    <div class="border-b-[0.8px] mb-1 border-b-accent py-1 w-full">
+      <h5 class="mb-1 font-bold text-[16px] md:text-[18px]">
+        Suitable For
+      </h5>
+      <p class="text-[14px] mt-1 md:text-[16px]">
+        Ideal for various uses and applications.
+      </p>
+    </div>
+  
+    <div class="border-b-[0.8px] mb-1 border-b-accent py-1 w-full">
+      <h5 class="mb-1 font-bold text-[16px] md:text-[18px]">
+        Format
+      </h5>
+      <p class="text-[14px] mt-1 md:text-[16px]">
+        Available in different formats to suit your preferences.
+      </p>
+    </div>
+  
+    <div class="border-b-[0.8px] mb-1 border-b-accent py-1 w-full">
+      <h5 class="mb-1 font-bold text-[16px] md:text-[18px]">
+        Key Features
+      </h5>
+      <p class="text-[14px] mt-1 md:text-[16px]">
+        Experience the power of the standout features that make this product exceptional.
+      </p>
+    </div>
+  </div>
+  ))
+
+const ProductDetails = Component(({ item }) => {
+  const product = { ...item, _count: reactive(1)};
+  const { product_title, variant, review, price, discount, count, _count, id } = product;
+  set_recently_viewed(id)
+  const selectedVariant = reactive(variant[0] || 0);
+  
+  const increment = () => _count.value++
   const decrement = () => {
-    if (count.value < 2) return;
-    count.value--
+    if (_count.value < 2) return;
+    _count.value--
   }
   
-  const addToCart = () => add_to_cart({
-    id: count.value,
-    quantity: count.value,
-    name: "Demo Item"
-  });
+  const addToCart = () => {
+    // store the count value
+    const quantity = Number.parseInt(_count.value);
+    add_to_cart({
+      ...product,
+         quantity,
+    });
+    // reset it back to 1
+    _count.value = 1;
+  }
+  
+  const renderStars = () => {
+    const fullStars = Math.floor(review);
+    const hasHalfStar = review - fullStars >= 0.5;
+    
+    const stars = [];
+  
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<span key={i} class="bi bi-star-fill" />);
+    }
+  
+    if (hasHalfStar) {
+      stars.push(<span key="half" class="bi bi-star-half" />);
+    }
+  
+    const remainingStars = 5 - stars.length;
+    for (let i = 0; i < remainingStars; i++) {
+      stars.push(<span key={i + fullStars} class="bi bi-star" />);
+    }
+  
+    return stars;
+}
+
   
   return (
     <div class="w-full">
       <div class="flex flex-col gap-y-3">
         <h4 class="text-[18px] md:text-[24px] lg:text-[26px] font-semibold">
-          Lactic Acid 10% + HA
+          {product_title}
         </h4>
         
         <div class="flex justify-between gap-x-2 w-[40%] text-[13px]">
           <div class="flex gap-x-1">
-            <span class="bi bi-star-fill"/>
-            <span class="bi bi-star-fill"/>
-            <span class="bi bi-star-fill"/>
-            <span class="bi bi-star-half"/>
-            <span class="bi bi-star"/>
+            {renderStars()}
           </div>
           
-          <span class="text-gray-400">3.5</span>
+          <span class="text-gray-400">{review}</span>
           
-          <span class="text-gray-400">(181)</span>
+          <span class="text-gray-400">({count})</span>
         </div>
+
         
         <div class="my-5 w-[45%] flex justify-between gap-x-4 items-center">
-          <div class="flex border border-accent whitespace-nowrap h-[28px] w-[107px]">
-            <div class="w-1/2 h-full bg-accent text-basic flex items-center justify-center text-sm">60 ml</div>
-            <div class="w-1/2 text-sm flex items-center justify-center bg-basic text-accent text-[10px]">30 ml</div>
+        {variant.length > 1 ? (
+          <div class="flex border border-accent whitespace-nowrap h-[28px] w-auto">
+            {variant.map((item, index) => (
+              <div
+                key={index}
+                class={`w-1/${variant.length} px-2 h-full ${
+                  item === selectedVariant.value ? 'bg-accent text-basic' :
+                  `bg-basic text-accent ${index !== variant.length -1 ?
+                  'border-r' : ''} border-r-accent`
+                } flex items-center justify-center text-sm`}
+              >
+                {item.trim().split("").slice(0,5).join("")}
+              </div>
+            ))
+            }
           </div>
-          <p class="font-bold text-[13px]">$8.99</p>
+        ) : <comment />}
+          <p class="font-bold text-[13px]">${!discount ? price :
+          (price - (price * (discount/100))).toFixed(2)}</p>
         </div>
         
         <ProductMeta />
@@ -127,7 +168,7 @@ const ProductDetails = Component(() => {
               +
             </button>
             <p class="flex w-1/3 h-full items-center justify-center
-            font-semibold text-[16px]" sync:textContent={count} />
+            font-semibold text-[16px]" sync:textContent={_count} />
             <button click$={decrement} class="flex w-1/3 h-full items-center
             justify-center font-bold text-[12px] border-l border-l-accent">
               -
@@ -170,9 +211,9 @@ const ProductDescHeader = ({ index }) => {
   )
 }
 
-const ProductDescBody = Component (({ index }) => (
+const ProductDescBody = Component(({ index }) => (
     <p class="font-semibold py-1 text-[12px]">
-      Welcome to Gboard clipboard, any text you copy will be saved here.
+      zebra problem pencil joke churn skin care lorem dolor illness virtual festival work piano limit exchange festival.
       Tap on the headers to Switch rows.
     </p>
   )
@@ -210,17 +251,33 @@ const ProductDesc = () => {
   )
 }
 
-export default Component(({ params }) => {
-  //count.value = 1;
-  //section.value = 1;
+const Recent = () => {
+  const recents = get_recently_viewed() || [];
+  
   return (
-    <div key={`product-${params.name}-${params.id}`} class="mt-5 mb-0 mx-0">
+      recents.length > 2 ?
+      (<div class="w-full my-16">
+        <ProductSection title="Recently Viewed">
+        {recents.map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (
+          <ProductCard {...{id, image, price, discount, title: product_title, category, isFavorite, slug}} />
+        ))
+        }
+        </ProductSection>
+      </div>) : <comment />
+  )
+}
+
+export default Component(({ params }) => {
+  const item = findBySlug(params.slug);
+  const similar = getProductsByCategory(item.category) || [];
+  return (
+    <div key={`product-${params.slug}`} class="mt-5 mb-0 mx-0">
       <div class="w-full md:gap-x-4 md:flex">
         <div class="mb-8 md:mb-0 md:w-1/2 lg:w-1/3">
           <ProductImages />
         </div>
         <div class="md:w-1/2 lg:w-2/3">
-          <ProductDetails />
+          <ProductDetails item={item} />
         </div>
       </div>
       
@@ -229,24 +286,16 @@ export default Component(({ params }) => {
       </div>
       
       <div class="w-full my-16">
-        <ProductSection title="similar products" link="/catalog">
-          <ProductCard title="A Demo Title" price={55.63} discount={10} />
-          <ProductCard title="A Demo Title" price={26.95} />
-          <ProductCard title="A Demo Title" price={104.99} />
-          <ProductCard title="A Demo Title" price={104.99} discount={10} />
+        <ProductSection title="similar products" link={`/catalog/${item.category}`}>
+          {
+            similar.map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (
+          <ProductCard {...{id, image, price, discount, title: product_title, category, isFavorite, slug}} />
+        )).reverse()
+          }
         </ProductSection>
       </div>
       
-      <div class="w-full my-16">
-        <ProductSection title="Recently Viewed">
-          <ProductCard title="A Demo Title" price={55.63} discount={10} />
-          <ProductCard title="A Demo Title" price={104.99} />
-          <ProductCard title="A Demo Title" price={26.95} />
-          <ProductCard title="A Demo Title" price={55.63} />
-          <ProductCard title="A Demo Title" price={104.99} discount={10} />
-          <ProductCard title="A Demo Title" price={104.99} />
-        </ProductSection>
-      </div>
+      <Recent />
     </div>
   )
 })

@@ -1,6 +1,9 @@
 import { Component } from "@mejor";
+import { Core } from "utiliti-js";
 import OrderItems from "@app/components/order-item";
+import { get_order } from "@app/services/cart-store";
 
+const df = new Core.DateFilter();
 
 const DetailItem = Component(({ head, body }) => (
   <div class="w-full">
@@ -14,37 +17,39 @@ const DetailItem = Component(({ head, body }) => (
   </div>
 ))
 
-const Details = Component(() => {
+const Details = Component(({ order_number, meta }) => {
+
   return (
     <div key="Details" class="w-full grid gap-y-8 md:gap-14 grid-cols-1 md:grid-cols-2 mt-8">
-      <DetailItem head="order number" body="445945615125" />
-      <DetailItem head="order date" body="July 1, 2023" />
-      <DetailItem head="E-mail" body="adenijiferanmi64@gmail.com" />
-      <DetailItem head="contact number" body="+23456789098654" />
+      <DetailItem head="order number" body={order_number} />
+      <DetailItem head="order date" body={df.text(new Date(Date.now()))} />
+      <DetailItem head="E-mail" body={meta.email} />
+      <DetailItem head="contact number" body={meta.phone || "+12345678986"} />
       <DetailItem head="delivery options" body="Standard Delivery" />
-      <DetailItem head="delivery address" body="15, Sapa Avenue, Pluto Way, Nigeria." />
+      <DetailItem head="delivery address" body={meta.address || "15, Sapa Avenue, Pluto Way,Nigeria."} />
       <DetailItem head="payment method" body="Mastercard ************5677" />
     </div>
   )
 });
 
-export default Component((p) => {
+export default Component(({ params }) => {
   /* Step 2 */
-  alert(JSON.stringify(p))
+  const { data, meta } = get_order(`order-${params['order-number']}`);
+
   return (
-    <div class="w-full md:flex md:gap-x-3">
-      <div key="OrderDetails" class="mt-10 md:mt-0 md:w-3/5">
+    <div key={params['order-number']} class="w-full md:flex md:gap-x-3">
+      <div class="mt-10 md:mt-0 md:w-3/5">
         <h4 class="text-[20px] md:text-[21px] mt-4 font-bold uppercase">
           Order details
         </h4>
-        <Details />
+        <Details {...{meta, order_number: data.orderNumber}} />
       </div>
       
       <div class="mt-10 md:mt-0 md:w-2/5">
         <h4 class="text-[20px] md:text-[21px] font-bold uppercase mt-4">
           Your order
         </h4>
-        <OrderItems />
+        <OrderItems items={data.items} />
       </div>
       
     </div>

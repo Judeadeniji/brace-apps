@@ -4,7 +4,8 @@ import { start, RouteOutlet } from './routes';
 import App from './app'
 import { Mount } from "@mejor";
 
+const root = document.querySelector("#root")
 //Start the Router;
-start();
+start(root, []);
 
-Mount(() => <App Outlet={RouteOutlet} />, document.querySelector("#root"));
+Mount(() => <App Outlet={RouteOutlet} />,  root);

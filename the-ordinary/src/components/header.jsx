@@ -1,9 +1,9 @@
 import { Component, useRef,reactive, mergeReactives } from "@mejor";
 import { Link } from "@mejor/router";
-import { Menu } from "@app/components/reusables";
 import { get_total_cart_items } from "@app/services/cart-store";
+import { getUniqueCategories } from "@app/services/methods";
 
-const show_menu = reactive(false);
+export const show_menu = reactive(false);
 
 const toggle_menu = () => show_menu.value = !show_menu.value;
 
@@ -19,77 +19,28 @@ const CartIcon = () => {
   )
 };
 
-const CatalogList = Component(() => (
-  <div class="bg-white overflow-hidden shadow-md flex flex-col rounded">
-    <Link class="py-3 px-4  w-full hover:bg-background text-sm font-semibold" to="/catalog/fashion">
-      Fashion
-    </Link>
-    <Link class="py-3 px-4  w-full hover:bg-background text-sm font-semibold"
-    to="/catalog/Skincare">
-      Skincare
-    </Link>
-    <Link class="py-3 px-4  w-full hover:bg-background text-sm font-semibold"
-    to="/catalog/mobile-phones">
-      Mobile Phones
-    </Link>
-    <Link class="py-3 px-4  w-full hover:bg-background text-sm font-semibold"
-    to="/catalog/pharmaceuticals">
-      Pharmaceuticals
-    </Link>
-  </div>
-));
+const CatalogList = Component(() => {
+  const c = getUniqueCategories().slice(0, 6)
 
-export const params = mergeReactives({
-  headerClass: reactive("")
-})
+  return (
+    <div class="bg-white overflow-hidden shadow-md flex flex-col rounded">
+    {
+      c.map(_c => (
+        <Link class="py-3 px-4  w-full hover:bg-background text-sm font-semibold" to={`/catalog/${_c}`}>
+          {_c}
+        </Link>
+      ))
+    }
+    </div>
+  )
+});
 
-
-let y = 0;
-let lastY = 0;
-let offset = 30;
-let tolerance = 50;
-let duration = 150;
-
-function deriveClass(y, dy) {
-  if (y < offset) {
-    return "";
-  }
-
-  if (Math.abs(dy) <= tolerance) {
-    return params.headerClass;
-  }
-
-  if (dy < 50) {
-    return "show bg-opacity-80 z-50 backdrop-blur-sm border-b border-b-background fixed top-0 left-0 right-0";
-  }
-  
- 
-  return "";
-}
-
-function updateClass(y) {
-  const dy = lastY - y;
-  lastY = y;
-  const dx = deriveClass(y, dy);
-  return dx
-}
-
-function setTransitionDuration(node) {
-  node.style.transitionDuration = duration;
-}
-
-function handleScroll() {
-  const newY = window.scrollY;
-  const dy = lastY - newY;
-  y = newY;
-  const dx = deriveClass(newY, dy);
-  params.headerClass = dx;
-}
 
 const Header = (() => {
-  window.addEventListener('scroll', handleScroll);
   return (
-    <header bind:this={setTransitionDuration} class={`bg-basic px-1 md:px-0 py-2 md:py-4 flex items-center justify-between md:border-b w-full ${params.headerClass}`}>
+    <header class="bg-basic bg-opacity-80 z-10 backdrop-blur-md px-2 py-2
+    md:py-5 md:px-4 flex items-center justify-between border-b fixed w-full
+    left-0 right-0 top-0">
       <Link to="/" class="rounded-md flex items-center justify-center inline-block h-[40px] w-[100px]">
         <div class="w-[90%] h-full">
           <p class="text-sm font-bold">The</p>
@@ -105,7 +56,7 @@ const Header = (() => {
         </div>
         <Link to="/catalogue/best-sellers" class="hover:font-bold">Best Sellers</Link>
         <Link to="/about" class="hover:font-bold">About The Ordinary</Link>
-        <Link to="/blog" class="hover:font-bold">Blog</Link>
+        <a href="https://judeadeniji.github.io" class="hover:font-bold">Blog</a>
       </nav>
       <div class="flex items-center justify-between my-auto gap-x-8 md:gap-0 md:inline-block">
         <div class="flex items-center justify-between my-auto gap-4 lg:gap-5">
@@ -124,7 +75,6 @@ const Header = (() => {
           <span class="border-[1.5px] border-black w-[23px] rounded-lg" />
         </div>
       </div>
-      <Menu show={show_menu} />
     </header>
   )
 });

@@ -1,7 +1,7 @@
 import { Component } from "@mejor";
 
 const Footer = Component(() => (
-  <footer class="w-full py-4 mt-14">
+  <footer class="w-full relative bottom-0 py-4 mt-14">
     <div class="flex w-full items-center">
       <div class="justify-self-start w-1/3 md:w-1/4 lg:w-1/5">
         <div class="w-full h-full">

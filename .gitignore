@@ -130,8 +130,6 @@ dist
 .pnp.*
 
 # mejor
-www/
 dist/
-service/
-services/
+www/
 .cache/

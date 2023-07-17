@@ -1,39 +1,54 @@
 import { Component, reactive } from "@mejor";
 import { Link, navigate } from "@mejor/router";
+import { set_favorite } from "@app/services/product-store";
 import { maths, Core } from "utiliti-js";
 
 const { roundTo } = maths;
 const { DateFilter } = Core;
 const df = new DateFilter();
 
+const LikeButton = ({ id, isFavorite }) => (
+  <i click$={() => set_favorite(id)} class={`self-end ml-1 text-xl bi ${isFavorite ? 'text-black bi-heart-fill' : 'bi-heart'}`} />
+)
+
 export const ProductCard = Component(({
   title,
   price,
   discount,
-  id
-}) => (
-    <Link data-br-preload="hover" to={`/catalog/skincare/${id}`} class="rounded-2xl hover:drop-shadow">
-      <figure class="w-[140px] h-[175px] md:w-[160px] md:h-[185px]  bg-background relative">
-        <img src="" alt="" />
+  id,
+  slug,
+  isFavorite,
+  category,
+  image
+}) => {
+  
+ return (
+   <div key={id} class="rounded-2xl">
+    <Link data-br-preload="hover" to={`/catalog/${category}/${slug}`} class="hover:drop-shadow">
+      <figure class="overflow-hidden w-[140px] h-[175px] md:w-[160px] md:h-[185px] relative">
+        <img loading="lazy" class="h-full w-full object-fit" src={image} alt={title} />
         {discount ? (<div class="bg-accent text-basic px-[8px] py-[5px] absolute text-[10px] top-[7px] right-[7px]"> {discount}% </div>) :
           (<comment/>)}
       </figure>
+    </Link>
       <div class="py-2 px-1 mt-2">
         <div class="flex items-center justify-between gap-x-2">
           <p class="text-[11px] font-bold text-black leading-4">{title}</p>
-          <i class="self-end ml-1 text-xl bi bi-heart" />
+          <LikeButton {...{id, isFavorite}} />
         </div>
         <div class="mt-1">
-          <p class="text-[12px] font-bold">${price}{" "} 
+          <p class="text-[12px] font-bold">${!discount ? price : roundTo(price -
+          (price *(discount/100)), 2)}{" "} 
           { discount ? (<span
           class="text-[12px] text-gray-500 line-through">
-            {roundTo(price - (price *(discount/100)), 2)}
+            {price}
           </span>) : <comment /> }
           </p>
         </div>
       </div>
-    </Link>
-));
+    </div>
+  );
+})
   
  export const SectionHeader = Component(({
    title,
@@ -48,7 +63,7 @@ export const ProductCard = Component(({
  ));
  
  export const ProductSlider = Component(({ children }) => (
-  <div class="no-scrollbar scroll-m-0 flex gap-x-[8px] w-full items-center overflow-x-scroll overflow-y-scroll">
+  <div class="no-scrollbar scroll-m-0 flex gap-x-[8px] w-full items-start overflow-x-scroll overflow-y-scroll">
     {children}
   </div>
 ))
@@ -67,13 +82,16 @@ export const ProductSection = Component(({
 ));
 
 
+
+export const AdBanner = Component(() => {
+
 const sources = [
   "https://img.freepik.com/free-photo/black-friday-inscription-from-wooden-table_23-2147973768.jpg?size=626&ext=jpg",
   "https://img.freepik.com/free-photo/dark-landscape-with-bird-flying_1122-682.jpg?size=626&ext=jpg",
   "https://img.freepik.com/free-photo/eid-al-fitr-greeting-with-lanterns-dark-blue-background_1123-294.jpg?size=626&ext=jpg",
 ];
 let idx = 1;
-const currImgUrl = reactive(sources[idx]);/*
+const currImgUrl = reactive(sources[idx]);
 setInterval(function() {
   currImgUrl.value = sources[idx];
   idx++;
@@ -81,17 +99,17 @@ setInterval(function() {
     idx = 0;
   }
 }, 5000);
-*/
 
-
-export const AdBanner = Component(() => (
+    
+  return (
   <div class="w-full h-[120px] md:h-[220px] lg:w-[320px] my-3">
     <div class="w-[95%] h-full mx-auto rounded-lg object-cover overflow-hidden">
       <img class="object-cover w-full h-full" sync:src={currImgUrl}
       loading="lazy" src={sources[2]} alt="ad" />
     </div>
   </div>
-));
+  )
+});
 
 export const BlogCard = Component(({ title, desc }) => (
   <article class="my-4 overflow-hidden rounded-2xl mx-3 border hover:drop-shadow-lg">
@@ -126,7 +144,7 @@ export const Menu = (({ show }) => {
   return show.value ? 
   (
      <div class="menu-container">
-      <div class="menu">
+      <div class="menu slide-left">
         <button class="button" click$={close_menu}>
           <i class="bi bi-box-arrow-left text-2xl m-auto font-extrabold" />
         </button>
@@ -134,7 +152,7 @@ export const Menu = (({ show }) => {
           <li><Link on:click$preventDefault$={() => route_to("/")} to="/">Home</Link></li>
           <li><Link on:click$preventDefault$={() => route_to("/catalog")} to="/catalog">Catalog</Link></li>
           <li><Link on:click$preventDefault$={() => route_to("/about")} to="/about">About</Link></li>
-          <li><Link on:click$preventDefault$={() => route_to("/blog")} to="/blog">Blog</Link></li>
+          <li><a href="https://judeadeniji.github.io">Blog</a></li>
         </ul>
       </div>
     </div>

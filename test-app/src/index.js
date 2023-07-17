@@ -1,7 +1,13 @@
 import './index.css';
-import 'boxicons/css/boxicons.min.css';
-import App from './app';
 import { Mount } from "brace-js";
+import { createRouter, ErrorBoundary, RouteOutlet } from "brace-js/router";
 
-Mount(() => <App />, document.querySelector("#root"));
+createRouter([
+  {
+    path: "/",
+    component: () => import("./app")
+  }
+])
+
+Mount(() => <RouteOutlet />, document.querySelector("#root"));
 

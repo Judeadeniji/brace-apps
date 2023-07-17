@@ -1,31 +1,34 @@
 import { maths } from "utiliti-js";
 import { Component } from "@mejor";
-import { Link } from "@mejor/router";
+import { Link, Location } from "@mejor/router";
+import { getProductsByCategory, getUniqueCategories } from "@app/services/methods";
+import { set_favorite, get_favorites } from "@app/services/product-store";
 
 const { roundTo } = maths;
 
-let items = [];
-
-for(let i = 0; i < 52; i++) {
-  items.push(i);
-}
-
-export const ProductCard = Component(({
+export const ProductCard = (({
   title,
   price,
   discount,
-  id
+  id,
+  slug,
+  image,
+  category,
+  isFavorite
 }) => (
-    <Link data-br-preload="hover" to={`/catalog/skincare/${id}`} class="w-full rounded-2xl hover:drop-shadow">
+    <div key={id} class="w-full rounded-2xl">
+    <Link data-br-preload="hover" to={`/catalog/${category}/${slug}`} class="hover:drop-shadow">
       <figure class="h-[200px] md:h-[230px] w-full bg-background relative">
-        <img src="" alt="" />
+        <img loading="lazy" class="h-full w-full object-cover" src={image} alt={title} />
         {discount ? (<div class="bg-accent text-basic px-[8px] py-[5px] absolute text-[10px] top-[7px] right-[7px]"> {discount}% </div>) :
           (<comment/>)}
       </figure>
+      </Link>
       <div class="py-2 w-full px-1 mt-2">
         <div class="flex items-center justify-between gap-x-2">
           <p class="text-[13px] font-semibold text-black leading-4">{title}</p>
-          <i class="self-end ml-1 text-xl bi bi-heart" />
+          <i click$={() => set_favorite(id)} class={`self-end ml-1 text-xl bi
+          ${isFavorite ? 'text-black bi-heart-fill' : 'bi-heart'}`} /> 
         </div>
         <div class="mt-1">
           <p class="text-[11px] font-bold">${price}{" "} 
@@ -36,7 +39,7 @@ export const ProductCard = Component(({
           </p>
         </div>
       </div>
-    </Link>
+    </div>
 ));
 
 const ShopBy = Component(() => (
@@ -70,10 +73,33 @@ const SortBy = Component(() => (
       Oldest
     </div>
   </div>
-))
+));
+
+const SidebarLinks = () => {
+  const categories = getUniqueCategories();
+  const { getCurrentPath } = Location();
+  const cPath = getCurrentPath();
+  const active_class = (c) => getCurrentPath().replace("%20", " ") === c ? "bg-blue-100 text-blue-600" : "";
+  
+  
+  return (
+    <div class="w-full flex flex-col gap-x-2">
+      <ul class="min-w-full">
+        {
+          categories.map((c) => (
+            <li class="w-full" key={c}>
+              <Link class={`whitespace-nowrap ${active_class('/catalog/'+c)}`}
+              to={`/catalog/${c}`}>{c}</Link>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  )
+}
 
 const Sidebar = Component(() => (
-  <aside class="w-[250px] pt-5 px-5 hidden md:block h-full bg">
+  <aside class="w-[250px] sdbr pt-5 px-5 hidden md:block h-full bg">
     <h1 class="text-[18px] font-bold uppercase">Filter</h1>
     <form class="mt-6">
       <div class="relative h-[35px] my-4">
@@ -109,24 +135,42 @@ const Sidebar = Component(() => (
       </div>
 
     </form>
+    
+    <h1 class="text-[24px] font-semibold uppercase my-3">
+      categories
+    </h1>
+    <SidebarLinks />
   </aside>
-))
+  ))
 
-export default Component(({ params }) => {
+export default (({ params }) => {
+  let category_name;
+  category_name = params.category_name;
+  if (params.category_name.includes('%20')) {
+    category_name = params.category_name.replace('%20', ' ')
+  }
+  
+  let items = getProductsByCategory(category_name);
+  
+  if (params.category_name.toLowerCase().includes("favorite")) {
+    items = get_favorites();
+  }
+  
   return (
-    <div class="w-full md:h-screen md:flex md:gap-x-6 m-0 bg-white">
+    <div key="single-catalog" class="w-full md:h-screen md:flex md:gap-x-6 m-0 bg-white">
       <Sidebar />
       <section class="pt-5 no-scrollbar w-full h-full md:overflow-x-hidden md:overflow-y-scroll">
         <div class="flex items-center justify-between">
-          <h1 class="text-[18px] md:text-[21px] font-bold uppercase">{params.name}</h1>
+          <h1 class="text-[18px] md:text-[21px] font-bold uppercase">{category_name}</h1>
           
           <button class="hidden text-2xl bg-transparent h-8 w-8 rounded-full active:scale-95 hover:bg-background font-extrabold">
             <i class="bi bi-filter text-2xl m-0 font-extrabold"></i>
           </button>
         </div>
         <div class="mt-6 grid gap-2 md:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {Object.keys(items).map((x,i) => (
-            <ProductCard title="A Demo Title" price={26.95+(i*i+x*x)} />
+          {items.map(({id, image, product_title: title, price, discount, slug,
+          category, isFavorite }) => (
+            <ProductCard {...{id, image, price, discount, title, category, slug, isFavorite}} />
           ))}
         </div>
       </section>

@@ -1,16 +1,12 @@
 import { Component, createData } from "@mejor";
 import { replaceView } from "@mejor/router";
+import { set_temp_order, get_order, clear_cart, commit_temp_order } from "@app/services/cart-store";
 import OrderItems from "@app/components/order-item";
 
 
 const userData = createData({
   state: "idle",
-  billing_details: {
-    is_valid: false
-  },
-  payment_details: {
-    is_valid: false
-  },
+  order_number: 0,
 })
 
 const Input = Component((props) => {
@@ -25,16 +21,16 @@ const Input = Component((props) => {
 
 const BillingForm = (() => {
   return (
-    <form key="form" class="w-full mt-8" submit$preventDefault$={handleBillingForm}>
+    <form key="form" class="w-full mt-8" use:form-data={handleBillingForm}>
       <div class="flex flex-col gap-y-5 justify-start">
         <Input name="first_name" type="text" placeholder="First Name*" required />
-        <Input name="last_name" placeholder="Last Name" />
+        <Input name="last_name" placeholder="Last Name" required />
         <Input name="email" autocomplete="on" placeholder="Email*" required />
-        <Input type="number" name="phone" placeholder="Phone Number*" required />
+        <Input type="number" name="phone" placeholder="Phone Number"  />
         <Input name="country" placeholder="Country*" required />
         <Input name="city" placeholder="City*" required />
         <Input name="address" placeholder="Address*" required />
-        <Input name="zip" type="number" placeholder="Postal Code*" required />
+        <Input name="zip" type="number" placeholder="Postal Code*"  />
       </div>
     
       <button type="submit" class="rounded-sm mt-10 uppercase active:scale-95
@@ -68,8 +64,8 @@ const BillingDetails = (() => {
   );
 });
 
-export default Component(() => {
-  
+export default Component(({ params }) => {
+  userData.mutate({ order_number: params['order-number'] }, { silent: true })
   return (
     <div key="checkout-component" class="w-full h-full">
       <BillingDetails />
@@ -77,13 +73,26 @@ export default Component(() => {
   )
 })
 
-async function handleBillingForm() {
-  userData.mutate({ state: "pending" })
+async function handleBillingForm(e, Formdata) {
+  userData.mutate({ state: "pending" });
+  e.preventDefault();
+  const data = new Formdata(e.target);
+  const _data = {}
+  data.forEach((value, key) => {
+    _data[key] = value
+  })
+  
   await new Promise(r => {
     setTimeout(async function() {
       r();
       userData.mutate({ state: "idle" })
-      await replaceView("/order/12345")
+      set_temp_order({
+        data: get_order(userData.value.order_number),
+        meta: _data
+      });
+      commit_temp_order(userData.value.order_number)
+      clear_cart();
+      await replaceView("/orders/"+userData.value.order_number);
     }, 5000);
   })
 }
