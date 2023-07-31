@@ -11,15 +11,15 @@ const server = express();
 server.use(cors());
 
 // Serve the "www/assets" directory
-server.use('/assets', express.static(path.join(root, 'www', 'assets')));
-server.use('/assets/css', express.static(path.join(root, 'www', 'assets')));
-server.use('/catalog', express.static(path.join(root, 'www')));
+server.use('/assets', express.static(path.join(root, 'ww3', 'assets')));
+server.use('/assets/css', express.static(path.join(root, 'ww3', 'assets')));
+server.use('/catalog', express.static(path.join(root, 'ww3')));
 
 // Serve the "www" directory for subroutes under "/catalog/"
 server.get("/catalog/*", (req, res, next) => {
   const subroute = req.params[0];
   if (!subroute.startsWith("assets")) {
-    express.static(path.join(root, 'www'))(req, res, next);
+    express.static(path.join(root, 'ww3'))(req, res, next);
   } else {
     next();
   }
