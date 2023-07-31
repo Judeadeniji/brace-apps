@@ -1,5 +1,6 @@
-import { Component, reactive } from "@mejor";
+import { Component, reactive, signal, signalEffect } from "@mejor";
 import { Link, navigate } from "@mejor/router";
+import Image from "./image";
 import { set_favorite } from "@app/services/product-store";
 import { maths, Core } from "utiliti-js";
 
@@ -25,13 +26,13 @@ export const ProductCard = Component(({
  return (
    <div key={id} class="rounded-2xl">
     <Link data-br-preload="hover" to={`/catalog/${category}/${slug}`} class="hover:drop-shadow">
-      <figure class="overflow-hidden w-[140px] h-[175px] md:w-[160px] md:h-[185px] relative">
-        <img loading="lazy" class="h-full w-full object-fit" src={image} alt={title} />
+      <figure class="overflow-hidden rounded-t-md w-[140px] h-[175px] md:w-[160px] md:h-[185px] relative">
+        <Image loading="lazy" class="h-full w-full object-fit" src={image} alt={title} width="100%" height="100%" />
         {discount ? (<div class="bg-accent text-basic px-[8px] py-[5px] absolute text-[10px] top-[7px] right-[7px]"> {discount}% </div>) :
           (<comment/>)}
       </figure>
     </Link>
-      <div class="py-2 px-1 mt-2">
+      <div class="py-2 px-1 mt-2 max-w-[140px] md:max-w-[160px]">
         <div class="flex items-center justify-between gap-x-2">
           <p class="text-[11px] font-bold text-black leading-4">{title}</p>
           <LikeButton {...{id, isFavorite}} />
@@ -82,30 +83,35 @@ export const ProductSection = Component(({
 ));
 
 
-
-export const AdBanner = Component(() => {
-
 const sources = [
   "https://img.freepik.com/free-photo/black-friday-inscription-from-wooden-table_23-2147973768.jpg?size=626&ext=jpg",
   "https://img.freepik.com/free-photo/dark-landscape-with-bird-flying_1122-682.jpg?size=626&ext=jpg",
   "https://img.freepik.com/free-photo/eid-al-fitr-greeting-with-lanterns-dark-blue-background_1123-294.jpg?size=626&ext=jpg",
 ];
 let idx = 1;
-const currImgUrl = reactive(sources[idx]);
-setInterval(function() {
-  currImgUrl.value = sources[idx];
-  idx++;
-  if(idx % 3 === 0) {
-    idx = 0;
-  }
-}, 5000);
+
+export const AdBanner = (() => {
+
+const currImgUrl = signal(sources[idx]);
+//const currImgUrl = reactive(sources[idx]);
+
+signalEffect(() => {
+  const i = setInterval(function() {
+    currImgUrl.value = sources[idx];
+    idx++;
+    if(idx % sources.length === 0) {
+      idx = 0;
+    }
+  }, 1000);
+  return () => clearInterval(i)
+})
+
 
     
   return (
   <div class="w-full h-[120px] md:h-[220px] lg:w-[320px] my-3">
     <div class="w-[95%] h-full mx-auto rounded-lg object-cover overflow-hidden">
-      <img class="object-cover w-full h-full" sync:src={currImgUrl}
-      loading="lazy" src={sources[2]} alt="ad" />
+      <Image class="object-cover w-full h-full" loading="lazy" src={currImgUrl.value} alt={`ad ${sources[idx]}`} />
     </div>
   </div>
   )
@@ -129,32 +135,26 @@ export const BlogCard = Component(({ title, desc }) => (
   </article>
 ));
 
-export const ProductCardLarge = Component(() => (
- []
-));
-
-
 export const Menu = (({ show }) => { 
   const close_menu = () => show.value = !show.value;
   const route_to = (to) => {
-  close_menu();
-  navigate(to);
-}
+    close_menu();
+    navigate(to);
+  }
 
-  return show.value ? 
-  (
-     <div class="menu-container">
-      <div class="menu slide-left">
-        <button class="button" click$={close_menu}>
-          <i class="bi bi-box-arrow-left text-2xl m-auto font-extrabold" />
-        </button>
-        <ul>
-          <li><Link on:click$preventDefault$={() => route_to("/")} to="/">Home</Link></li>
-          <li><Link on:click$preventDefault$={() => route_to("/catalog")} to="/catalog">Catalog</Link></li>
-          <li><Link on:click$preventDefault$={() => route_to("/about")} to="/about">About</Link></li>
-          <li><a href="https://judeadeniji.github.io">Blog</a></li>
-        </ul>
-      </div>
+  return (
+   <div style:display={show.value ? "flex" : "none"} class = "menu-container">
+    <div class="menu slide-left">
+      <button class="button" click$={close_menu}>
+        <i class="bi bi-box-arrow-left text-2xl m-auto font-extrabold" />
+      </button>
+      <ul>
+        <li><Link on:click$preventDefault$={() => route_to("/")} to="/">Home</Link></li>
+        <li><Link on:click$preventDefault$={() => route_to("/catalog")} to="/catalog">Catalog</Link></li>
+        <li><Link on:click$preventDefault$={() => route_to("/about")} to="/about">About</Link></li>
+        <li><a href="https://judeadeniji.github.io">Blog</a></li>
+      </ul>
     </div>
-  ) : <comment />
+   </div>
+  )
 });

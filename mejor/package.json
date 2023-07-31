@@ -15,11 +15,11 @@
     "boxicons": "^2.1.4",
     "brace-js": "file:../../brace-js",
     "brace-js-scripts": "^1.2.231",
-    "brace-js-scripts-dev": "^1.2.2",
-    "brace-router": "^1.1.1"
+    "brace-router": "^1.1.1",
+    "mejor": "file:../../mejor",
+    "utiliti-js": "^2.0.3"
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.1",
-    "utiliti-js": "^2.0.336"
+    "tailwindcss": "^3.3.1"
   }
 }

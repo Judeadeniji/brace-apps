@@ -1,14 +1,10 @@
 import { reactive, env } from "@mejor";
 import { beforeLayoutPaint, Status } from "@mejor/router";
-import { Store, array, object, Http } from "utiliti-js";
+import { Store, array, object } from "utiliti-js";
 import { app_store } from "./app-store";
+import http from "./http-client";
 
-const http = new Http({
-  retryDelay: 500, //milliseconds
-  retryCount: 2, // retry twice
-});
-
-const host = env() === "development" ? "http://localhost:8123/api" : "/api"
+const host = env() === "development" ? "http://localhost:8123/api" : "/api";
 const { forEach } = array;
 const { extendObject: _extend } = object;
 

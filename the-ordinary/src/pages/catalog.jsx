@@ -3,6 +3,8 @@ import { Component } from "@mejor";
 import { Link, Location } from "@mejor/router";
 import { getProductsByCategory, getUniqueCategories } from "@app/services/methods";
 import { set_favorite, get_favorites } from "@app/services/product-store";
+import Image from "@app/components/image";
+
 
 const { roundTo } = maths;
 
@@ -19,7 +21,7 @@ export const ProductCard = (({
     <div key={id} class="w-full rounded-2xl">
     <Link data-br-preload="hover" to={`/catalog/${category}/${slug}`} class="hover:drop-shadow">
       <figure class="h-[200px] md:h-[230px] w-full bg-background relative">
-        <img loading="lazy" class="h-full w-full object-cover" src={image} alt={title} />
+        <Image width="100%" height="100%" class="h-full w-full object-cover" src={image} alt={title} />
         {discount ? (<div class="bg-accent text-basic px-[8px] py-[5px] absolute text-[10px] top-[7px] right-[7px]"> {discount}% </div>) :
           (<comment/>)}
       </figure>

@@ -25,7 +25,7 @@ const BillingForm = (() => {
       <div class="flex flex-col gap-y-5 justify-start">
         <Input name="first_name" type="text" placeholder="First Name*" required />
         <Input name="last_name" placeholder="Last Name" required />
-        <Input name="email" autocomplete="on" placeholder="Email*" required />
+        <Input name="email" type="email" autocomplete="on" placeholder="Email*" required />
         <Input type="number" name="phone" placeholder="Phone Number"  />
         <Input name="country" placeholder="Country*" required />
         <Input name="city" placeholder="City*" required />

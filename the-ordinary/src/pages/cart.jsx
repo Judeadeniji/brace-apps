@@ -1,6 +1,7 @@
 import { Component } from "@mejor";
 import { navigate } from '@mejor/router';
 import { ProductSection, ProductCard } from "@app/components/reusables";
+import Image from "@app/components/image";
 import { get_recently_viewed } from "@app/services/product-store";
 import { 
   get_cart_items,
@@ -99,8 +100,7 @@ const CartItem = (({ product }) => {
   return (
     <div key={"cart-item-"+product.id} class="flex relative gap-x-4 w-full">
       <figure class="overflow-hidden bg-background rounded h-[160px] w-[120px] md:h-[180px] md:w-[140px]">
-        <img loading="lazy" class="w-full h-full object-fit"
-        src={product?.image} />
+        <Image class="w-full h-full object-fit" src={product?.image} width="100%" height="100%" />
       </figure>
       
        <div class="flex flex-col justify-between">
@@ -190,4 +190,4 @@ function createOrderAndNavigate() {
   navigate("/cart/"+orderNumber)
 }
 
-export const cache = true;
+export const cache = false;

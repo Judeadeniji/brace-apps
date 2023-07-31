@@ -1,5 +1,4 @@
 @import "tailwindcss/base";
-@import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
@@ -124,6 +123,9 @@ html {
 .slide-left {
   animation: slide-in-left 300ms linear;
 }
+.slide-out-left {
+  animation: slide-out-left 300ms linear forwards;
+}
 
 @keyframes slide-in-top {
   from {
@@ -131,6 +133,7 @@ html {
     transform: translateY(-100%);
   }
   to {
+    display: none;
     transform: translateY(0%);
   }
 }
@@ -142,6 +145,16 @@ html {
   }
   to {
     transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    display: flex;
+    transform: translateX(-100%);
   }
 }
 

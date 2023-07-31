@@ -1,87 +1,37 @@
-import { useSignal, useEffect, Component, reactive } from '@mejor';
-import { ErrorBoundary } from '@mejor/router';
+import { Link } from "@mejor/router";
 
-export function Metadata() {
+export function Metadata () {
   return {
-    title: "My Test App"
+    title: "Testing"
   };
 }
 
-const data = reactive(["Item 0"])
-const loading = reactive(false);
-
-// Function to generate fake data using JavaScript for loops
-const generateFakeData = () => {
-  const newData = [];
-  for (let i = 0; i < 2; i++) {
-    newData.push(`Item ${data.value.length + i + 1}`);
-  }
-  return newData;
-};
-
-// Simulate API call or data fetching
-const fetchData = async () => {
-  loading.value = true
-
-  // Simulating a delay
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
-  const newData = generateFakeData(); // Generate fake data using JavaScript for loops
-  
-  data.value = [...data.value, ...newData]
-  
-  loading.value = false;
-}
-
-const FakeData = (() => {
-
-  const handleScroll = () => {
-    if (
-      window.innerHeight + window.pageYOffset >=
-      document.documentElement.offsetHeight
-    ) {
-      // Reached the bottom of the page
-      fetchData();
-    }
-  };
-
-
-  useEffect(async () => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  
-  useEffect(fetchData, [])
-
+export default function () {
   return (
-    <div key="no bish">
-    <div>
-      {
-        data.value.map(i => <h1 class="text-2xl my-1 h-screen w-full bg-yellow-100" key={i}>{i}</h1>)
-      }
-    </div>
-    <div class:bg-amber-300>
-       {loading.value ? <div key="loader">Loading more data...</div> : <comment />}
-    </div>
-    </div>
-  );
-});
+    <ul key="HomeComponent" class="border rounded-lg divide-y divide-gray-300 mx-1 mt-3 p-4">
+      <li class="py-2">
+        <Link to="/page-with-signal" class="block hover:bg-gray-100 rounded-lg p-3">
+          Pagination using signals
+        </Link>
+      </li>
+      
+      <li class="py-2">
+        <Link to="/page-with-reactive" class="block hover:bg-gray-100 rounded-lg p-3">
+          Pagination using <code class="p-1 rounded text-sm text-red-500 bg-gray-50">reactive()</code>
+        </Link>
+      </li>
 
-function Fallback({ error }) {
-  return <h1>Error: {error.message} {error.stack}</h1>;
+      <li class="py-2">
+        <Link to="/page-without-signal" class="block hover:bg-gray-100 rounded-lg p-3">
+          Pagination using <code class="p-1 rounded text-sm text-red-500 bg-gray-50">useData()</code>
+        </Link>
+      </li>
+      
+      <li class="py-2">
+        <Link to="/client-actions" class="block hover:bg-gray-100 rounded-lg p-3">
+          Handle Forms Without using a Server
+        </Link>
+      </li>
+    </ul>
+  )
 }
-
-const App = (props) => {
-  return (
-    <div className="main" key="root">
-      <h1 className="text-4xl">Hello</h1>
-      <ErrorBoundary fallback={(e) => <Fallback error={e} />}>
-        <FakeData />
-      </ErrorBoundary>
-    </div>
-  );
-};
-
-export default App;

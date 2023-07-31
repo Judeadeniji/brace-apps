@@ -1,5 +1,6 @@
 import { Component } from "@mejor";
 import HeroBg from "@app/static/hero-bg2.jpg";
+import Image from "./image";
 
 const text = "Ordinary.";
 let i = 0;
@@ -23,7 +24,7 @@ const Hero = Component(() => (
   <section class="w-full mt-3">
     <div class="relative flex flex-col w-full">
       <div class="absolute flex-grow left-0 right-0 top-0 bottom-0">
-        <img class="w-full rounded flex-grow h-full" src={HeroBg} alt="Hero Background" />
+        <Image class="w-full rounded flex-grow h-full" src={HeroBg} alt="Hero Background" width="100%" height="100%" />
       </div>
       <div class="container mx-auto px-4 py-12 md:py-24 relative z-10">
         <div class="md:flex md:flex-row md:items-center">

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A BraceJs Application",
   "main": "src/index.js",
-  "homepage": "./",
+  "homepage": "/",
   "scripts": {
     "dev": "brace-js-script dev",
     "build": "brace-js-script build"
