@@ -51,7 +51,7 @@ server.get("/api/image", async (req, res) => {
 // Send index.html for other routes
 server.get(/^\/(?!api)(?!.*\.(?:html|js|css|ttf|otf|woff|woff2|json)).*$/, (req, res) => {
   
-  res.sendFile(path.join(root, 'www', 'index.html'));
+  res.sendFile(path.join(root, 'ww3', 'index.html'));
 });
 
 export {
