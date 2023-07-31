@@ -102,7 +102,7 @@ signalEffect(() => {
     if(idx % sources.length === 0) {
       idx = 0;
     }
-  }, 1000);
+  }, 5000);
   return () => clearInterval(i)
 })
 
