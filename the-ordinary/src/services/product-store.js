@@ -60,7 +60,7 @@ beforeLayoutPaint(async () => {
   try {
     const response = await http.get(`${host}/products`);
     const products = await response.json();
-    forEach(products, async (item) => {
+    /*forEach(products, async (item) => {
       const imgPromise = await
       http.get(`${host}/image?q=${item.product_title}`);
       const images = await imgPromise.json();
@@ -71,7 +71,7 @@ beforeLayoutPaint(async () => {
         viewed: false,
         image: !images.error ? images.response[5] : item.image
       });
-    });
+    });*/
     
     prods.value = products;
   } catch (e) {

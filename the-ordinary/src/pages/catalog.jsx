@@ -159,7 +159,7 @@ export default (({ params }) => {
   }
   
   return (
-    <div key="single-catalog" class="w-full md:h-screen md:flex md:gap-x-6 m-0 bg-white">
+    <div key={category_name} class="w-full md:h-screen md:flex md:gap-x-6 m-0 bg-white">
       <Sidebar />
       <section class="pt-5 no-scrollbar w-full h-full md:overflow-x-hidden md:overflow-y-scroll">
         <div class="flex items-center justify-between">

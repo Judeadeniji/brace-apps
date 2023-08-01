@@ -100,7 +100,7 @@ const CartItem = (({ product }) => {
   return (
     <div key={"cart-item-"+product.id} class="flex relative gap-x-4 w-full">
       <figure class="overflow-hidden bg-background rounded h-[160px] w-[120px] md:h-[180px] md:w-[140px]">
-        <Image class="w-full h-full object-fit" src={product?.image} width="100%" height="100%" />
+        <Image class="w-full h-full object-fit" src={product?.image} width="100%" height="100%" alt={product.product_title} />
       </figure>
       
        <div class="flex flex-col justify-between">
@@ -162,9 +162,8 @@ const Cart = () => {
           cart_items.map((product,i) => {
             return (
             <div key={product.id}>
-            <CartItem product={product} />
-            {i !== cart_items.length - 1 ? <Divider /> : 
-            (<comment> End </comment>) }
+              <CartItem product={product} />
+              {i !== cart_items.length - 1 ? <Divider /> : (<comment> End </comment>) }
             </div>
             )
           }) :
