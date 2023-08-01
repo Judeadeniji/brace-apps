@@ -23,7 +23,7 @@ function addDataImagePrefix(base64Str) {
 // Function to load the image and handle caching
 async function loadImage(target, src, alt) {
   const cachedImage = sessionStorage.getItem(alt);
-   if(target.src || target.srcset || target.alt.includes(alt)) return;
+   if(target.src || target.srcset || target?.alt?.includes(alt)) return;
    if (cachedImage) {
       target.src = cachedImage;
       target.srcset = cachedImage;

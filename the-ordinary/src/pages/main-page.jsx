@@ -6,6 +6,8 @@ import { AdBanner, ProductSection, ProductCard, SectionHeader, BlogCard } from "
 import { getProductsByCategory, getUniqueCategories } from "@app/services/methods";
 import { get_products } from "@app/services/product-store";
 
+let v_prod = [];
+
 const Section = Component(({ title }) => {
   const products = getProductsByCategory(title);
   if(!products.length) {
@@ -18,15 +20,15 @@ const Section = Component(({ title }) => {
     useEffect(() => {
       for (let i = 0; i < 17; i++) {
         const idx = Math.floor(Math.random() * 100);
-        const exists = products.find(i => i.id === _products[idx]);
-        if(!exists) products.push(_products[idx]);
+        const exists = v_prod.find(i => i.id === _products[idx]);
+        if(!exists) v_prod.push(_products[idx]);
       }
     }, []);
   }
   return (
       <ProductSection title={title} link={`/catalog/${title}`}>
       {
-        products.map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (
+        (products?.length ? products : v_prod).map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (
           <ProductCard {...{id,image, price, discount, title: product_title, category, isFavorite, slug}} />
         ))
       }

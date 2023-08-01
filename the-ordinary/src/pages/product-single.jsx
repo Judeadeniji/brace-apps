@@ -82,7 +82,7 @@ const ProductDetails = Component(({ item }) => {
   const product = { ...item, _count: reactive(1)};
   const { product_title, variant, review, price, discount, count, _count, id } = product;
   set_recently_viewed(id)
-  const selectedVariant = reactive(variant[0] || 0);
+  const selectedVariant = reactive(product?.variant[0]);
   
   const increment = () => _count.value++
   const decrement = () => {

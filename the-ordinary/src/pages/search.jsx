@@ -3,6 +3,8 @@ import { Link, Location } from "@mejor/router";
 import { searchProducts } from "@app/services/methods";
 import { maths } from "utiliti-js";
 import { set_favorite, get_favorites } from "@app/services/product-store";
+import Image from "@app/components/image";
+
 
 const { roundTo } = maths;
 const { setQueryParam, getQueryParams } = Location();
@@ -14,7 +16,7 @@ const ProductCard = ({ title, price, discount, id, slug, image, category, isFavo
   <div key={id} class="w-full rounded-2xl">
     <Link data-br-preload="hover" to={`/catalog/${category}/${slug}`} class="hover:drop-shadow">
       <figure class="h-[200px] md:h-[230px] w-full bg-background relative">
-        <img loading="lazy" class="h-full w-full object-cover" src={image} alt={title} />
+        <Image loading="lazy" class="h-full w-full object-fit" src={image} alt={title} width="100%" height="100%" />
         {discount ? (
           <div class="bg-accent text-basic px-[8px] py-[5px] absolute text-[10px] top-[7px] right-[7px]">
             {discount}%
