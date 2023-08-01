@@ -65,7 +65,7 @@ const Routes = [
 
 const { goBack } = History();
 
-use404Component(Component(() => (
+export const NotFound = Component(() => (
   <section class="bg-background w-screen h-screen flex items-center justify-center" key="error-route">
     <div class="text-center px-4 md:px-0">
       <h1 class="mb-2 text-4xl md:text-6x lg:text-8xl font-extrabold text-accent">404 PAGE NOT FOUND</h1>
@@ -75,7 +75,9 @@ use404Component(Component(() => (
       hover:bg-basic hover:shadow-md transition-colors duration-200 hover:text-accent">go back</button>
     </div>
   </section>
-)))
+))
+
+use404Component(NotFound)
 
 useErrorComponent(Component(() => (
   <section class="bg-background w-screen h-screen flex items-center justify-center" key="error-route">

@@ -272,6 +272,14 @@ const Recent = () => {
   )
 }
 
+const Similar = ({ similar, item }) => (
+    <ProductSection title="similar products" link={`/catalog/${item.category}`}>
+        {
+          similar.map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (<ProductCard {...{id, image, price, discount, title: product_title, category, isFavorite, slug}} />)).reverse()
+        }
+    </ProductSection>
+)
+
 export default Component(({ params }) => {
   const item = findBySlug(params.slug);
   const similar = getProductsByCategory(item.category) || [];
@@ -291,13 +299,7 @@ export default Component(({ params }) => {
       </div>
       
       <div class="w-full my-16">
-        <ProductSection title="similar products" link={`/catalog/${item.category}`}>
-          {
-            similar.map(({id, image, product_title, price, discount, isFavorite, slug, category }) => (
-          <ProductCard {...{id, image, price, discount, title: product_title, category, isFavorite, slug}} />
-        )).reverse()
-          }
-        </ProductSection>
+        <Similar item={item} similar={similar} />
       </div>
       
       <Recent />

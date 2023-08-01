@@ -4,7 +4,7 @@ import { Link, Location } from "@mejor/router";
 import { getProductsByCategory, getUniqueCategories } from "@app/services/methods";
 import { set_favorite, get_favorites } from "@app/services/product-store";
 import Image from "@app/components/image";
-
+import { NotFound } from "@app/routes"
 
 const { roundTo } = maths;
 
@@ -144,10 +144,16 @@ const Sidebar = Component(() => (
     <SidebarLinks />
   </aside>
   ))
+  
+  
+const ItemsLists = (({ items }) => (
+  <div class="mt-6 grid gap-2 md:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    {items.map(({id, image, product_title: title, price, discount, slug, category, isFavorite }) => (<ProductCard key={id} {...{id, image, price, discount, title, category, slug, isFavorite}} />))}
+  </div>
+))
 
-export default (({ params }) => {
-  let category_name;
-  category_name = params.category_name;
+export default Component(({ params }) => {
+  let category_name = params.category_name;
   if (params.category_name.includes('%20')) {
     category_name = params.category_name.replace('%20', ' ')
   }
@@ -156,6 +162,10 @@ export default (({ params }) => {
   
   if (params.category_name.toLowerCase().includes("favorite")) {
     items = get_favorites();
+  }
+  
+  if (!items || !items?.length) {
+    return <NotFound />
   }
   
   return (
@@ -169,12 +179,7 @@ export default (({ params }) => {
             <i class="bi bi-filter text-2xl m-0 font-extrabold"></i>
           </button>
         </div>
-        <div class="mt-6 grid gap-2 md:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {items.map(({id, image, product_title: title, price, discount, slug,
-          category, isFavorite }) => (
-            <ProductCard {...{id, image, price, discount, title, category, slug, isFavorite}} />
-          ))}
-        </div>
+        <ItemsLists items={items} />
       </section>
     </div>
   );
