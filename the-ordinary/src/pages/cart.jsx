@@ -82,15 +82,15 @@ const QuantityControl = (({ quantity, id }) => {
   
   return (
     <div class="flex w-[100px] h-full border border-accent">
-      <button click$={increment} class="flex w-1/3 h-full items-center
+      <button click$={decrement} class="flex w-1/3 h-full items-center
       justify-center font-bold text-[12px] border-r border-r-accent">
-        +
+        -
       </button>
       <p class="flex w-1/3 h-full items-center justify-center
       font-semibold text-[16px]">{quantity}</p>
-      <button click$={decrement} class="flex w-1/3 h-full items-center
+      <button click$={increment} class="flex w-1/3 h-full items-center
       justify-center font-bold text-[12px] border-l border-l-accent">
-        -
+        +
       </button>
     </div>
   )

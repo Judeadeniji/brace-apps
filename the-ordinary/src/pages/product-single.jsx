@@ -1,23 +1,28 @@
 import { Component, reactive } from "@mejor";
 import { ProductSection, ProductCard } from "@app/components/reusables";
+import Image from "@app/components/image";
 import { add_to_cart } from "@app/services/cart-store";
 import { get_recently_viewed, set_recently_viewed } from "@app/services/product-store";
 import { findBySlug, getProductsByCategory } from "@app/services/methods";
 
 
-const ProductImages = Component(() => {
+const ProductImages = Component(({ src }) => {
   return (
     <div class="w-full h-[320px] md:h-full gap-y-2 flex flex-col overflow-hidden rounded-md m-0">
       <div class="w-full h-2/3">
         <figure class="bg-background w-full h-full">
+          <Image class="w-full h-full object-cover" src={src} alt={src} width="auto" height="auto" />
         </figure>
       </div>
       <div class="w-full h-1/3 gap-x-2 flex">
         <figure class="w-1/3 bg-background h-full">
+          <Image class="w-full h-full object-cover" src={src} alt={src} width="auto" height="auto" />
         </figure>
         <figure class="w-1/3 bg-background h-full">
+          <Image class="w-full h-full object-cover" src={src} alt={src} width="auto" height="auto" />
         </figure>
         <figure class="w-1/3 bg-background h-full">
+          <Image class="w-full h-full object-cover" src={src} alt={src} width="auto" height="auto" />
         </figure>
       </div>
     </div>
@@ -163,15 +168,15 @@ const ProductDetails = Component(({ item }) => {
         
         <div class="flex mt-4 gap-x-4 items-center h-[34px]">
           <div class="flex w-[100px] h-full border border-accent">
-            <button click$={increment} class="flex w-1/3 h-full items-center
+            <button click$={decrement} class="flex w-1/3 h-full items-center
             justify-center font-bold text-[12px] border-r border-r-accent">
-              +
+              -
             </button>
             <p class="flex w-1/3 h-full items-center justify-center
             font-semibold text-[16px]" sync:textContent={_count} />
-            <button click$={decrement} class="flex w-1/3 h-full items-center
+            <button click$={increment} class="flex w-1/3 h-full items-center
             justify-center font-bold text-[12px] border-l border-l-accent">
-              -
+              +
             </button>
           </div>
           <button class="bg-accent w-[150px] h-full text-basic uppercase
@@ -274,7 +279,7 @@ export default Component(({ params }) => {
     <div key={`product-${params.slug}`} class="mt-5 mb-0 mx-0">
       <div class="w-full md:gap-x-4 md:flex">
         <div class="mb-8 md:mb-0 md:w-1/2 lg:w-1/3">
-          <ProductImages />
+          <ProductImages src={item.image} />
         </div>
         <div class="md:w-1/2 lg:w-2/3">
           <ProductDetails item={item} />

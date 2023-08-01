@@ -83,35 +83,12 @@ export const ProductSection = Component(({
 ));
 
 
-const sources = [
-  "https://img.freepik.com/free-photo/black-friday-inscription-from-wooden-table_23-2147973768.jpg?size=626&ext=jpg",
-  "https://img.freepik.com/free-photo/dark-landscape-with-bird-flying_1122-682.jpg?size=626&ext=jpg",
-  "https://img.freepik.com/free-photo/eid-al-fitr-greeting-with-lanterns-dark-blue-background_1123-294.jpg?size=626&ext=jpg",
-];
-let idx = 1;
-
-export const AdBanner = (() => {
-
-const currImgUrl = signal(sources[idx]);
-//const currImgUrl = reactive(sources[idx]);
-
-signalEffect(() => {
-  const i = setInterval(function() {
-    currImgUrl.value = sources[idx];
-    idx++;
-    if(idx % sources.length === 0) {
-      idx = 0;
-    }
-  }, 5000);
-  return () => clearInterval(i)
-})
-
-
+export const AdBanner = Component(() => {
     
   return (
   <div class="w-full h-[120px] md:h-[220px] lg:w-[320px] my-3">
     <div class="w-[95%] h-full mx-auto rounded-lg object-cover overflow-hidden">
-      <Image class="object-cover w-full h-full" loading="lazy" src={currImgUrl.value} alt={`ad ${sources[idx]}`} />
+      <Image class="object-cover w-full h-full" loading="lazy" src="https://camo.envatousercontent.com/aef97db195009b6cbcad1bf9d17c707e91c89487/68747470733a2f2f6164616e696d6174652e636f6d2f656e7661746f2f636f646563616e796f6e2f68746d6c352f61642d74656d706c617465732f646573632d696d67732f637573746f6d6572732e676966" alt="ads banner" width="95%" height="100%" />
     </div>
   </div>
   )
