@@ -4,18 +4,18 @@ export const fade = {
     { opacity: 1 }
   ],
   options: {
-    duration: 250,
+    duration: 500,
     fill: 'forwards'
   },
 }
 
 export const slide = {
   keyframes: [
-    { transform: "translateY(30px)" },
+    { transform: "translateY(20px)" },
     { transform: "translateY(0)" },
   ],
   options: {
-    duration: 300,
+    duration: 260,
     fill: 'forwards',
     iteration: 1
   }

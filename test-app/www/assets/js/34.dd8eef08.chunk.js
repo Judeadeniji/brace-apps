@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkBraceJs=self.webpackChunkBraceJs||[]).push([[34],{1759:(a,r,s)=>{s.r(r),s.d(r,{fade:()=>t,slide:()=>e});const t={keyframes:[{opacity:.1},{opacity:1}],options:{duration:250,fill:"forwards"}},e={keyframes:[{transform:"translateY(30px)"},{transform:"translateY(0)"}],options:{duration:300,fill:"forwards",iteration:1}}}}]);
