@@ -32,6 +32,12 @@ export default function () {
           Handle Forms Without using a Server
         </Link>
       </li>
+      
+      <li class="py-2">
+        <Link to="/todo" class="block hover:bg-gray-100 rounded-lg p-3">
+          Simple Todo App
+        </Link>
+      </li>
     </ul>
   )
 }

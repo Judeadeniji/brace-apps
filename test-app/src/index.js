@@ -35,13 +35,17 @@ createRouter([
     path: "/page-with-signal",
     component: () => signalPage,
   },
+  {
+    path: "/todo",
+    component: () => import("@pages/todo-app"),
+  },
 ]);
 
 beforeRoute(({ resolve, reject }) => {
   resolve();
 });
 
-/*
+
 useLoader(() => (
   <div class="bg-white left-0 right-0 top-0 fixed h-screen w-screen m-0 mx-auto z-50 flex items-center justify-center text-[#3b3b3b]">
     <loader class="touch-none">
@@ -50,7 +54,7 @@ useLoader(() => (
     </loader>
   </div>
 ))
-*/
+
 
 Mount(() => <RouteOutlet />, document.querySelector("#root"));
 
