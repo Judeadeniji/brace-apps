@@ -1,0 +1,49 @@
+{
+  "name": "Adeniji Oluwaferanmi",
+  "title": "Adeniji Oluwaferanmi • Portfolio",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "main.css": "/assets/css/main.2672bb83.css",
+  "main.js": "/assets/js/main.f214e288d11fbcb597ff.js",
+  "assets/js/12.6d0fcf4f.chunk.js": "/assets/js/12.6d0fcf4f.chunk.js",
+  "assets/js/944.f31fb3e0.chunk.js": "/assets/js/944.f31fb3e0.chunk.js",
+  "assets/js/304.7f06b579.chunk.js": "/assets/js/304.7f06b579.chunk.js",
+  "assets/js/347.7a78add8.chunk.js": "/assets/js/347.7a78add8.chunk.js",
+  "assets/js/779.3edd7802.chunk.js": "/assets/js/779.3edd7802.chunk.js",
+  "assets/js/97.150b8c2a.chunk.js": "/assets/js/97.150b8c2a.chunk.js",
+  "assets/js/707.25fa5214.chunk.js": "/assets/js/707.25fa5214.chunk.js",
+  "assets/js/34.dd8eef08.chunk.js": "/assets/js/34.dd8eef08.chunk.js",
+  "assets/js/454.c3947702.chunk.js": "/assets/js/454.c3947702.chunk.js",
+  "modules.js": "/assets/js/modules.60c85b5a7654ab23fbd2.js",
+  "index.html": "/index.html"
+}
