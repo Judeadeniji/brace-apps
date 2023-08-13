@@ -1,22 +1,20 @@
 import { Component as box, reactive, createData } from "@mejor";
-import { fade, slide } from "@app/animations";
+import { setLocalStorage, getLocalStorage } from "@mejor/browser";
+//import { fade, slide } from "@app/animations";
 
 export const Metadata = () => ({ title: "Simple Todo App" });
 
-const todos = createData([]);
+const savedTodos = getLocalStorage('todos');
+
+const todos = createData(savedTodos || []);
 
 // silent flag to minimize unnecessary re-render
 const todo = reactive('', { silent: true });
 const completed = reactive(false);
 
-function handleSubmit({ target }) {
-  todos.mutate([
-    {
-      todo: todo.value,
-      completed: false
-    }
-  ]);
-  target.reset();
+function handleSubmit() {
+  todos.mutate([ { todo: todo.value, completed: false }]);
+  todo.value = '';
 }
 
 function toggleCompleted({ isChecked, name }) {
@@ -30,6 +28,10 @@ function toggleCompleted({ isChecked, name }) {
 }
 
 
+// the big gun 🤣
+todos.subscribe(newTodos => setLocalStorage('todos', newTodos))
+
+
 const TodoForm = box(() => (
   <form submit$preventDefault$={handleSubmit}>
     <input class="bg-gray-100 focus:outline-0 focus:bg-blue-50 text-black p-2 rounded-md w-full" type="text" required name="todo" sync:value={todo} />
@@ -37,7 +39,7 @@ const TodoForm = box(() => (
 ))
 
 const TodoItem = box(({ todo, _key }) => (
-  <div use:animation={[fade, slide]} key={_key} class="bg-gray-200 flex items-center gap-x-2 m-2 text-black p-2 rounded-md">
+  <div key={_key} class="bg-gray-200 flex items-center gap-x-2 m-2 text-black p-2 rounded-md">
       <input checked={todo.completed} type="checkbox" name={`${_key}`} bind:checked={toggleCompleted} />
       <p class="text-md">{todo.todo}</p>
   </div>
@@ -63,7 +65,7 @@ export default () => (
         </div>
       </div>
       
-      <div class="w-full px-1 gap-y-2">
+      <div key={{}} class="w-full px-1 gap-y-2">
         {
           (!completed.value ? todos.value :  todos.value.filter(todo => todo.completed)).map((todo, i) => (
             <TodoItem _key={i} todo={todo} />
