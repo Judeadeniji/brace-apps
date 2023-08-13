@@ -4,7 +4,7 @@ import { setLocalStorage, getLocalStorage } from "@mejor/browser";
 
 export const Metadata = () => ({ title: "Simple Todo App" });
 
-const savedTodos = getLocalStorage('totdos');
+const savedTodos = getLocalStorage('todos');
 
 const todos = createData(savedTodos || []);
 
@@ -29,7 +29,7 @@ function toggleCompleted({ isChecked, name }) {
 
 // the big gun 🤣
 todos.subscribe(newTodos => {
-  setLocalStorage('totdos', newTodos);
+  setLocalStorage('todos', newTodos);
 });
 
 const TodoForm = box(() => (
