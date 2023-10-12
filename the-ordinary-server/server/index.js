@@ -3,6 +3,7 @@ import path from "node:path";
 import scrapeImagesFromGoogle from "./image-api.js";
 import cors from "cors";
 import db from "../db.json" assert { type: "json" };
+import { getProductsByCategory, getUniqueCategories, searchProducts, findBySlug } from "./methods.js";
 
 const root = path.resolve(process.cwd());
 
@@ -28,6 +29,38 @@ server.get("/catalog/*", (req, res, next) => {
 // API routes
 server.get("/api/products", (req, res) => {
   res.json(db);
+});
+
+server.get("/api/products/categories", (req, res) => {
+  const { name } = req.query;
+  
+  if (name) {
+    res.json({
+      error: false,
+      result: getProductsByCategory(name)
+    })
+  } else {
+    res.json({
+      error: false,
+      result: getUniqueCategories(),
+    })
+  }
+});
+
+server.get("/api/products/search", (req, res) => {
+  const { q = '' } = req.query;
+  
+  res.json({
+    error: false,
+    result: searchProducts(q)
+  })
+});
+
+server.get("/api/products/:slug", (req, res) => {
+  res.json({
+    error: false,
+    result: findBySlug(req.params.slug) || []
+  });
 });
 
 server.get("/api/image", async (req, res) => {

@@ -14,7 +14,7 @@ const App = (({ Outlet }) => {
       }
       <div class="border m-0 w-screen relative px-2 h-full">
         <Header />
-            <div class="w-full m-0 mt-[64px]">
+            <div class="w-full m-0 md:mt-[120px] mt-[64px]">
               <Outlet /> 
               <Menu show={show_menu} />
             </div>

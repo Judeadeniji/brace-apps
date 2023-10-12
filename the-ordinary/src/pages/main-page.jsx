@@ -42,7 +42,7 @@ export default Component(() => {
   return (
     <section key="main-page">
       <Hero />
-      <div class="mt-10" />
+      <div class="mt-10 md:mt-20" />
       <AdBanner />
       <div class="mt-8">
         <Section title={categories[0]} />

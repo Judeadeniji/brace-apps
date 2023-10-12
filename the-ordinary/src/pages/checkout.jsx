@@ -1,6 +1,6 @@
 import { Component, createData } from "@mejor";
 import { replaceView } from "@mejor/router";
-import { set_temp_order, get_order, clear_cart, commit_temp_order } from "@app/services/cart-store";
+import { set_temp_order, get_order, clear_cart, commit_temp_order, clear_temp_order } from "@app/services/cart-store";
 import OrderItems from "@app/components/order-item";
 
 
@@ -84,14 +84,15 @@ async function handleBillingForm(e, Formdata) {
   
   await new Promise(r => {
     setTimeout(async function() {
-      r();
-      userData.mutate({ state: "idle" })
       set_temp_order({
         data: get_order(userData.value.order_number),
         meta: _data
       });
       commit_temp_order(userData.value.order_number)
       clear_cart();
+      clear_temp_order();
+      userData.mutate({ state: "idle" })
+      r();
       await replaceView("/orders/"+userData.value.order_number);
     }, 5000);
   })

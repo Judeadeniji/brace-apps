@@ -26,7 +26,7 @@ export const ProductCard = Component(({
  return (
    <div key={id} class="rounded-2xl">
     <Link data-br-preload="hover" to={`/catalog/${category}/${slug}`} class="hover:drop-shadow">
-      <figure class="overflow-hidden rounded-t-md w-[140px] h-[175px] md:w-[160px] md:h-[185px] relative">
+      <figure class="overflow-hidden rounded-t-md w-[160px] h-[185px] md:w-[180px] md:h-[195px] relative">
         <Image loading="lazy" class="h-full w-full object-fit" src={image} alt={title} width="100%" height="100%" />
         {discount ? (<div class="bg-accent text-basic px-[8px] py-[5px] absolute text-[10px] top-[7px] right-[7px]"> {discount}% </div>) :
           (<comment/>)}
@@ -64,7 +64,7 @@ export const ProductCard = Component(({
  ));
  
  export const ProductSlider = Component(({ children }) => (
-  <div class="no-scrollbar scroll-m-0 flex gap-x-[8px] w-full items-start overflow-x-scroll overflow-y-scroll">
+  <div class="no-scrollbar scroll-m-0 flex gap-x-[8px] md:gap-x-[12px] w-full items-start overflow-x-scroll overflow-y-scroll">
     {children}
   </div>
 ))
@@ -86,7 +86,7 @@ export const ProductSection = Component(({
 export const AdBanner = Component(() => {
     
   return (
-  <div class="w-full h-[120px] md:h-[220px] lg:w-[320px] my-3">
+  <div class="w-full h-[120px] md:h-[320px] lg:h-[380px] my-3">
     <div class="w-[95%] h-full mx-auto rounded-lg object-cover overflow-hidden">
       <Image class="object-cover w-full h-full" loading="lazy" src="https://camo.envatousercontent.com/aef97db195009b6cbcad1bf9d17c707e91c89487/68747470733a2f2f6164616e696d6174652e636f6d2f656e7661746f2f636f646563616e796f6e2f68746d6c352f61642d74656d706c617465732f646573632d696d67732f637573746f6d6572732e676966" alt="ads banner" width="95%" height="100%" />
     </div>

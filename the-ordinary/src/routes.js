@@ -1,5 +1,5 @@
 import { Component } from "@mejor";
-import { createRouter, RouteOutlet, beforeRoute, use404Component, useErrorComponent, onRoute, Status, History } from "@mejor/router";
+import { createRouter, RouteOutlet, beforeRoute, use404Component, useErrorComponent, onRoute, Status, History, navigate } from "@mejor/router";
 import { useTitle } from "@mejor/browser";
 import { strings } from "utiliti-js";
 import { get_order } from "@app/services/cart-store";
@@ -87,7 +87,7 @@ useErrorComponent(Component(() => (
       <p class="text-gray-500 text-lg">
         We apologize for the inconvenience. Please try again later.
       </p>
-      <button click$={"/"} class="mx-auto px-4 py-2 mt-6 mx-auto bg-accent
+      <button click$={() => navigate("/")} class="mx-auto px-4 py-2 mt-6 mx-auto bg-accent
       uppercase text-white text-lg w-full md:w-auto rounded-sm
       hover:bg-basic hover:shadow-md transition-colors duration-200 hover:text-accent">Go Home</button>
     </div>

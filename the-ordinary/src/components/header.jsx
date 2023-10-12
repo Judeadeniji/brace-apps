@@ -1,4 +1,4 @@
-import { Component, useRef,reactive, mergeReactives } from "@mejor";
+import { Component, reactive } from "@mejor";
 import { Link } from "@mejor/router";
 import { get_total_cart_items } from "@app/services/cart-store";
 import { getUniqueCategories } from "@app/services/methods";

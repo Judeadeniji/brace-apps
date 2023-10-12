@@ -24,6 +24,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
+    "didyoumean": "^1.2.2",
     "express": "^4.18.2",
     "node-fetch": "^3.3.1"
   }
